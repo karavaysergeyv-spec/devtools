@@ -1199,3 +1199,54 @@ textarea::placeholder {
     margin-left: 0;
   }
 }
+
+
+.jwt-toolbar {
+  flex-wrap: wrap;
+}
+
+.jwt-token-pane {
+  margin-bottom: 12px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.jwt-token-pane .plain-editor {
+  height: 124px;
+  min-height: 124px;
+  max-height: 260px;
+  resize: vertical;
+}
+
+.jwt-workspace {
+  min-height: 370px;
+}
+
+.jwt-workspace .plain-editor {
+  min-height: 320px;
+}
+
+.status-message.is-warning,
+.jwt-signature-note {
+  color: var(--warning);
+}
+
+@media (max-width: 820px) {
+  .jwt-workspace .plain-editor {
+    min-height: 250px;
+  }
+}
+
+@media (max-width: 560px) {
+  .jwt-token-pane .plain-editor {
+    height: 150px;
+    min-height: 150px;
+  }
+
+  .jwt-signature-note {
+    width: 100%;
+  }
+}

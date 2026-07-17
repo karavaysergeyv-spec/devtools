@@ -34,7 +34,7 @@
         </button>
         <button class="tool-nav-button" type="button" role="tab" aria-selected="false" data-tool="jwt">
           <span aria-hidden="true">JWT</span>
-          <span id="jwtNavLabel">JWT Decoder</span>
+          <span id="jwtNavLabel">JWT</span>
         </button>
         <button class="tool-nav-button" type="button" role="tab" aria-selected="false" data-tool="compare">
           <span aria-hidden="true">≠</span>
@@ -165,46 +165,94 @@
         <div class="workspace-heading">
           <div>
             <p class="eyebrow" id="jwtEyebrow">Інструменти розробника</p>
-            <h1 id="jwtHeading">JWT Decoder</h1>
+            <h1 id="jwtHeading">JWT енкодер і декодер</h1>
+          </div>
+          <div class="mode-switch" role="tablist" aria-label="Режим JWT" id="jwtModeSwitch">
+            <button class="mode-button is-active" type="button" role="tab" aria-selected="true" data-jwt-mode="decode" id="jwtDecodeModeButton">Декодер</button>
+            <button class="mode-button" type="button" role="tab" aria-selected="false" data-jwt-mode="encode" id="jwtEncodeModeButton">Енкодер</button>
           </div>
         </div>
 
-        <section class="toolbar jwt-toolbar" aria-label="Дії JWT Decoder">
-          <div class="toolbar-group">
-            <button class="button button-primary" type="button" id="decodeJwtButton"><span aria-hidden="true">{ }</span> Декодувати</button>
-          </div>
-          <div class="toolbar-group">
-            <button class="icon-button" type="button" id="jwtSampleButton" title="Вставити приклад" aria-label="Вставити приклад">✦</button>
-            <button class="icon-button" type="button" id="clearJwtButton" title="Очистити" aria-label="Очистити">×</button>
-          </div>
-        </section>
+        <div class="jwt-mode-panel" id="jwtDecoderPanel">
+          <section class="toolbar jwt-toolbar" aria-label="Дії JWT Decoder">
+            <div class="toolbar-group">
+              <button class="button button-primary" type="button" id="decodeJwtButton"><span aria-hidden="true">{ }</span> Декодувати</button>
+            </div>
+            <div class="toolbar-group">
+              <button class="icon-button" type="button" id="jwtSampleButton" title="Вставити приклад" aria-label="Вставити приклад">✦</button>
+              <button class="icon-button" type="button" id="clearJwtButton" title="Очистити" aria-label="Очистити">×</button>
+            </div>
+          </section>
 
-        <article class="editor-pane jwt-token-pane">
-          <header class="pane-header"><span class="pane-title" id="jwtTokenTitle">JWT токен</span><span class="character-count" id="jwtInputCount">0 символів</span></header>
-          <textarea class="plain-editor" id="jwtInput" spellcheck="false" autocomplete="off" aria-label="JWT токен" placeholder="Вставте JWT токен…"></textarea>
-        </article>
-
-        <section class="editor-shell jwt-workspace">
-          <article class="editor-pane">
-            <header class="pane-header">
-              <div><span class="pane-title">Header</span><span class="data-type">JSON</span></div>
-              <button class="icon-button small" type="button" id="copyJwtHeaderButton" title="Копіювати Header" aria-label="Копіювати Header">⧉</button>
-            </header>
-            <textarea class="plain-editor" id="jwtHeader" readonly spellcheck="false" aria-label="JWT Header" placeholder="Декодований Header з’явиться тут"></textarea>
+          <article class="editor-pane jwt-token-pane">
+            <header class="pane-header"><span class="pane-title" id="jwtTokenTitle">JWT токен</span><span class="character-count" id="jwtInputCount">0 символів</span></header>
+            <textarea class="plain-editor" id="jwtInput" spellcheck="false" autocomplete="off" aria-label="JWT токен" placeholder="Вставте JWT токен…"></textarea>
           </article>
-          <article class="editor-pane output-pane">
-            <header class="pane-header">
-              <div><span class="pane-title">Payload</span><span class="data-type">JSON</span></div>
-              <button class="icon-button small" type="button" id="copyJwtPayloadButton" title="Копіювати Payload" aria-label="Копіювати Payload">⧉</button>
-            </header>
-            <textarea class="plain-editor" id="jwtPayload" readonly spellcheck="false" aria-label="JWT Payload" placeholder="Декодований Payload з’явиться тут"></textarea>
-          </article>
-        </section>
 
-        <section class="statusbar" aria-live="polite">
-          <div class="status-message is-idle" id="jwtStatus"><span class="status-icon" aria-hidden="true">•</span><span id="jwtStatusText">Готово до роботи</span></div>
-          <div class="privacy-note jwt-signature-note"><span aria-hidden="true">!</span><span id="jwtSignatureNote">Підпис не перевіряється</span></div>
-        </section>
+          <section class="editor-shell jwt-workspace">
+            <article class="editor-pane">
+              <header class="pane-header">
+                <div><span class="pane-title">Header</span><span class="data-type">JSON</span></div>
+                <button class="icon-button small" type="button" id="copyJwtHeaderButton" title="Копіювати Header" aria-label="Копіювати Header">⧉</button>
+              </header>
+              <textarea class="plain-editor" id="jwtHeader" readonly spellcheck="false" aria-label="JWT Header" placeholder="Декодований Header з’явиться тут"></textarea>
+            </article>
+            <article class="editor-pane output-pane">
+              <header class="pane-header">
+                <div><span class="pane-title">Payload</span><span class="data-type">JSON</span></div>
+                <button class="icon-button small" type="button" id="copyJwtPayloadButton" title="Копіювати Payload" aria-label="Копіювати Payload">⧉</button>
+              </header>
+              <textarea class="plain-editor" id="jwtPayload" readonly spellcheck="false" aria-label="JWT Payload" placeholder="Декодований Payload з’явиться тут"></textarea>
+            </article>
+          </section>
+
+          <section class="statusbar" aria-live="polite">
+            <div class="status-message is-idle" id="jwtStatus"><span class="status-icon" aria-hidden="true">•</span><span id="jwtStatusText">Готово до роботи</span></div>
+            <div class="privacy-note jwt-signature-note"><span aria-hidden="true">!</span><span id="jwtSignatureNote">Підпис не перевіряється</span></div>
+          </section>
+        </div>
+
+        <div class="jwt-mode-panel" id="jwtEncoderPanel" hidden>
+          <section class="toolbar jwt-encoder-toolbar" aria-label="Дії JWT Encoder">
+            <div class="toolbar-group">
+              <button class="button button-primary" type="button" id="encodeJwtButton"><span aria-hidden="true">{ }</span> Створити JWT</button>
+            </div>
+            <div class="jwt-encoder-options">
+              <label class="select-control"><span id="jwtAlgorithmLabel">Алгоритм</span><select id="jwtAlgorithmSelect"><option value="HS256">HS256</option><option value="HS384">HS384</option><option value="HS512">HS512</option><option value="none">none</option></select></label>
+              <button class="icon-button" type="button" id="jwtEncoderSampleButton" title="Вставити приклад" aria-label="Вставити приклад">✦</button>
+              <button class="icon-button" type="button" id="clearJwtEncoderButton" title="Очистити" aria-label="Очистити">×</button>
+            </div>
+          </section>
+
+          <section class="editor-shell jwt-encoder-workspace">
+            <article class="editor-pane">
+              <header class="pane-header"><div><span class="pane-title" id="jwtEncodeHeaderTitle">Header</span><span class="data-type">JSON</span></div></header>
+              <textarea class="plain-editor" id="jwtEncodeHeader" spellcheck="false" autocomplete="off" aria-label="JWT Header" placeholder="Введіть Header JSON…"></textarea>
+            </article>
+            <article class="editor-pane">
+              <header class="pane-header"><div><span class="pane-title" id="jwtEncodePayloadTitle">Payload</span><span class="data-type">JSON</span></div></header>
+              <textarea class="plain-editor" id="jwtEncodePayload" spellcheck="false" autocomplete="off" aria-label="JWT Payload" placeholder="Введіть Payload JSON…"></textarea>
+            </article>
+          </section>
+
+          <div class="jwt-secret-row" id="jwtSecretRow">
+            <label class="jwt-secret-control" for="jwtSecret"><span id="jwtSecretLabel">Секрет</span><input type="password" id="jwtSecret" autocomplete="off" placeholder="Введіть секрет для HMAC" /></label>
+            <label class="check-control"><input type="checkbox" id="jwtShowSecret" /><span id="jwtShowSecretLabel">Показати секрет</span></label>
+          </div>
+
+          <article class="editor-pane jwt-token-pane jwt-encoded-token-pane">
+            <header class="pane-header">
+              <span class="pane-title" id="jwtEncodedTokenTitle">Створений JWT</span>
+              <button class="icon-button small" type="button" id="copyEncodedJwtButton" title="Копіювати JWT" aria-label="Копіювати JWT">⧉</button>
+            </header>
+            <textarea class="plain-editor" id="jwtEncodedToken" readonly spellcheck="false" aria-label="Створений JWT" placeholder="Створений JWT з’явиться тут"></textarea>
+          </article>
+
+          <section class="statusbar" aria-live="polite">
+            <div class="status-message is-idle" id="jwtEncoderStatus"><span class="status-icon" aria-hidden="true">•</span><span id="jwtEncoderStatusText">Готово до роботи</span></div>
+            <div class="privacy-note"><span aria-hidden="true">⌁</span><span id="jwtEncoderPrivacy">Дані обробляються лише у вашому браузері</span></div>
+          </section>
+        </div>
       </section>
 
       <section class="tool-panel" id="compareTool" data-tool-panel="compare" hidden>

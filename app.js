@@ -150,10 +150,10 @@ const translations = {
     "sqlSyntaxValid": "Синтаксис прийнято парсером {dialect}",
     "sqlFormatterUnavailable": "Модуль SQL форматера не завантажено",
     "sqlInvalid": "Помилка синтаксису {dialect}",
-    "jwtNav": "JWT Decoder",
-    "jwtPageTitle": "Devtools — JWT Decoder",
+    "jwtNav": "JWT",
+    "jwtPageTitle": "Devtools — JWT енкодер і декодер",
     "jwtEyebrow": "Інструменти розробника",
-    "jwtHeading": "JWT Decoder",
+    "jwtHeading": "JWT енкодер і декодер",
     "jwtActions": "Дії JWT Decoder",
     "decodeJwt": "Декодувати",
     "jwtToken": "JWT токен",
@@ -172,7 +172,27 @@ const translations = {
     "jwtAlgorithm": "алгоритм: {algorithm}",
     "jwtExpired": "термін дії минув {date}",
     "jwtExpires": "діє до {date}",
-    "jwtNoSignature": "токен не містить підпису"
+    "jwtNoSignature": "токен не містить підпису",
+    "jwtModeLabel": "Режим JWT",
+    "jwtDecodeMode": "Декодер",
+    "jwtEncodeMode": "Енкодер",
+    "jwtEncoderActions": "Дії JWT Encoder",
+    "encodeJwt": "Створити JWT",
+    "jwtAlgorithmLabel": "Алгоритм",
+    "jwtEncodeHeaderPlaceholder": "Введіть Header JSON…",
+    "jwtEncodePayloadPlaceholder": "Введіть Payload JSON…",
+    "jwtSecret": "Секрет",
+    "jwtSecretPlaceholder": "Введіть секрет для HMAC",
+    "jwtShowSecret": "Показати секрет",
+    "jwtEncodedToken": "Створений JWT",
+    "jwtEncodedTokenPlaceholder": "Створений JWT з’явиться тут",
+    "copyEncodedJwt": "Копіювати JWT",
+    "jwtEncodePartEmpty": "Додайте JSON у частину {part}",
+    "jwtEncodePartInvalid": "Частина {part} має містити коректний JSON-об’єкт",
+    "jwtSecretRequired": "Додайте секрет для підпису {algorithm}",
+    "jwtCryptoUnavailable": "Web Crypto API недоступний у цьому браузері",
+    "jwtEncoded": "JWT створено",
+    "jwtUnsigned": "без підпису"
   },
   "en": {
     "pageTitle": "Devtools — JSON and XML formatter",
@@ -306,10 +326,10 @@ const translations = {
     "sqlSyntaxValid": "Syntax accepted by the {dialect} parser",
     "sqlFormatterUnavailable": "SQL formatter module is not loaded",
     "sqlInvalid": "{dialect} syntax error",
-    "jwtNav": "JWT Decoder",
-    "jwtPageTitle": "Devtools — JWT Decoder",
+    "jwtNav": "JWT",
+    "jwtPageTitle": "Devtools — JWT encoder and decoder",
     "jwtEyebrow": "Developer tools",
-    "jwtHeading": "JWT Decoder",
+    "jwtHeading": "JWT encoder and decoder",
     "jwtActions": "JWT Decoder actions",
     "decodeJwt": "Decode",
     "jwtToken": "JWT token",
@@ -328,13 +348,34 @@ const translations = {
     "jwtAlgorithm": "algorithm: {algorithm}",
     "jwtExpired": "expired {date}",
     "jwtExpires": "expires {date}",
-    "jwtNoSignature": "token has no signature"
+    "jwtNoSignature": "token has no signature",
+    "jwtModeLabel": "JWT mode",
+    "jwtDecodeMode": "Decoder",
+    "jwtEncodeMode": "Encoder",
+    "jwtEncoderActions": "JWT Encoder actions",
+    "encodeJwt": "Create JWT",
+    "jwtAlgorithmLabel": "Algorithm",
+    "jwtEncodeHeaderPlaceholder": "Enter Header JSON…",
+    "jwtEncodePayloadPlaceholder": "Enter Payload JSON…",
+    "jwtSecret": "Secret",
+    "jwtSecretPlaceholder": "Enter the HMAC secret",
+    "jwtShowSecret": "Show secret",
+    "jwtEncodedToken": "Generated JWT",
+    "jwtEncodedTokenPlaceholder": "Generated JWT will appear here",
+    "copyEncodedJwt": "Copy JWT",
+    "jwtEncodePartEmpty": "Add JSON to the {part} part",
+    "jwtEncodePartInvalid": "The {part} part must contain a valid JSON object",
+    "jwtSecretRequired": "Add a secret for the {algorithm} signature",
+    "jwtCryptoUnavailable": "Web Crypto API is not available in this browser",
+    "jwtEncoded": "JWT created",
+    "jwtUnsigned": "unsigned"
   }
 };
 
 let currentMode = "json";
 let currentLanguage = localStorage.getItem("devtools-language") || "uk";
 let currentTool = localStorage.getItem("devtools-tool") || "formatter";
+let currentJwtMode = localStorage.getItem("devtools-jwt-mode") || "decode";
 let toastTimer;
 
 function translate(key, values = {}) {
@@ -456,6 +497,9 @@ function applyLanguage(language, announce = false) {
   document.querySelector("#jwtNavLabel").textContent = translate("jwtNav");
   document.querySelector("#jwtEyebrow").textContent = translate("jwtEyebrow");
   document.querySelector("#jwtHeading").textContent = translate("jwtHeading");
+  document.querySelector("#jwtModeSwitch").setAttribute("aria-label", translate("jwtModeLabel"));
+  document.querySelector("#jwtDecodeModeButton").textContent = translate("jwtDecodeMode");
+  document.querySelector("#jwtEncodeModeButton").textContent = translate("jwtEncodeMode");
   document.querySelector(".jwt-toolbar").setAttribute("aria-label", translate("jwtActions"));
   setActionLabel("#decodeJwtButton", translate("decodeJwt"));
   document.querySelector("#jwtTokenTitle").textContent = translate("jwtToken");
@@ -472,6 +516,24 @@ function applyLanguage(language, announce = false) {
   document.querySelector("#copyJwtPayloadButton").title = translate("copyJwtPayload");
   document.querySelector("#copyJwtPayloadButton").setAttribute("aria-label", translate("copyJwtPayload"));
   document.querySelector("#jwtSignatureNote").textContent = translate("jwtSignatureNote");
+  document.querySelector(".jwt-encoder-toolbar").setAttribute("aria-label", translate("jwtEncoderActions"));
+  setActionLabel("#encodeJwtButton", translate("encodeJwt"));
+  document.querySelector("#jwtAlgorithmLabel").textContent = translate("jwtAlgorithmLabel");
+  jwtEncoderElements.header.placeholder = translate("jwtEncodeHeaderPlaceholder");
+  jwtEncoderElements.payload.placeholder = translate("jwtEncodePayloadPlaceholder");
+  document.querySelector("#jwtSecretLabel").textContent = translate("jwtSecret");
+  jwtEncoderElements.secret.placeholder = translate("jwtSecretPlaceholder");
+  document.querySelector("#jwtShowSecretLabel").textContent = translate("jwtShowSecret");
+  document.querySelector("#jwtEncodedTokenTitle").textContent = translate("jwtEncodedToken");
+  jwtEncoderElements.result.setAttribute("aria-label", translate("jwtEncodedToken"));
+  jwtEncoderElements.result.placeholder = translate("jwtEncodedTokenPlaceholder");
+  document.querySelector("#jwtEncoderSampleButton").title = translate("insertSample");
+  document.querySelector("#jwtEncoderSampleButton").setAttribute("aria-label", translate("insertSample"));
+  document.querySelector("#clearJwtEncoderButton").title = translate("clear");
+  document.querySelector("#clearJwtEncoderButton").setAttribute("aria-label", translate("clear"));
+  document.querySelector("#copyEncodedJwtButton").title = translate("copyEncodedJwt");
+  document.querySelector("#copyEncodedJwtButton").setAttribute("aria-label", translate("copyEncodedJwt"));
+  document.querySelector("#jwtEncoderPrivacy").textContent = translate("privacy");
   document.querySelector("#caseNavLabel").textContent = translate("caseNav");
   document.querySelector("#caseEyebrow").textContent = translate("caseEyebrow");
   document.querySelector("#caseHeading").textContent = translate("caseHeading");
@@ -774,6 +836,18 @@ const jwtElements = {
   statusText: document.querySelector("#jwtStatusText"),
 };
 
+const jwtEncoderElements = {
+  header: document.querySelector("#jwtEncodeHeader"),
+  payload: document.querySelector("#jwtEncodePayload"),
+  algorithm: document.querySelector("#jwtAlgorithmSelect"),
+  secret: document.querySelector("#jwtSecret"),
+  secretRow: document.querySelector("#jwtSecretRow"),
+  showSecret: document.querySelector("#jwtShowSecret"),
+  result: document.querySelector("#jwtEncodedToken"),
+  status: document.querySelector("#jwtEncoderStatus"),
+  statusText: document.querySelector("#jwtEncoderStatusText"),
+};
+
 const cyrillicLookalikes = {
   "А": "A", "а": "a", "В": "B", "Е": "E", "е": "e", "К": "K", "М": "M",
   "Н": "H", "О": "O", "о": "o", "Р": "P", "р": "p", "С": "C", "с": "c",
@@ -795,7 +869,7 @@ function setTool(tool, focus = true) {
   });
   updateToolPageTitle();
   if (focus) {
-    const target = tool === "formatter" ? elements.source : tool === "sql" ? sqlElements.input : tool === "jwt" ? jwtElements.input : tool === "compare" ? compareElements.original : tool === "case" ? caseElements.input : cyrillicElements.input;
+    const target = tool === "formatter" ? elements.source : tool === "sql" ? sqlElements.input : tool === "jwt" ? jwtFocusTarget() : tool === "compare" ? compareElements.original : tool === "case" ? caseElements.input : cyrillicElements.input;
     target.focus();
   }
 }
@@ -1074,6 +1148,7 @@ function refreshLocalizedToolState() {
   updateCyrillicCount();
   refreshSqlLocalizedState();
   refreshJwtLocalizedState();
+  refreshJwtEncoderLocalizedState();
   refreshCaseResult();
   if (compareElements.output.dataset.rendered || compareElements.original.value || compareElements.changed.value) compareTexts();
   else resetComparisonView();
@@ -1287,6 +1362,27 @@ sqlElements.input.addEventListener("keydown", (event) => {
 });
 
 
+function jwtFocusTarget() {
+  return currentJwtMode === "encode" ? jwtEncoderElements.header : jwtElements.input;
+}
+
+function setJwtMode(mode, focus = true) {
+  currentJwtMode = mode === "encode" ? "encode" : "decode";
+  localStorage.setItem("devtools-jwt-mode", currentJwtMode);
+  document.querySelector("#jwtDecoderPanel").hidden = currentJwtMode !== "decode";
+  document.querySelector("#jwtEncoderPanel").hidden = currentJwtMode !== "encode";
+  document.querySelectorAll("[data-jwt-mode]").forEach((button) => {
+    const active = button.dataset.jwtMode === currentJwtMode;
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-selected", String(active));
+  });
+  if (focus) jwtFocusTarget().focus();
+}
+
+document.querySelectorAll("[data-jwt-mode]").forEach((button) => {
+  button.addEventListener("click", () => setJwtMode(button.dataset.jwtMode));
+});
+
 function setJwtStatus(type, text) {
   jwtElements.status.className = "status-message is-" + type;
   jwtElements.status.querySelector(".status-icon").textContent = type === "valid" ? "✓" : type === "error" || type === "warning" ? "!" : "•";
@@ -1393,11 +1489,14 @@ function refreshJwtLocalizedState() {
   }
 }
 
-function encodeJwtPart(value) {
-  const bytes = new TextEncoder().encode(JSON.stringify(value));
+function bytesToBase64Url(bytes) {
   let binary = "";
   bytes.forEach((byte) => { binary += String.fromCharCode(byte); });
   return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
+}
+
+function encodeJwtPart(value) {
+  return bytesToBase64Url(new TextEncoder().encode(JSON.stringify(value)));
 }
 
 document.querySelector("#decodeJwtButton").addEventListener("click", () => decodeJwt());
@@ -1439,6 +1538,147 @@ jwtElements.input.addEventListener("keydown", (event) => {
     decodeJwt();
   }
 });
+
+
+function setJwtEncoderStatus(type, text) {
+  jwtEncoderElements.status.className = "status-message is-" + type;
+  jwtEncoderElements.status.querySelector(".status-icon").textContent = type === "valid" ? "✓" : type === "error" ? "!" : "•";
+  jwtEncoderElements.statusText.textContent = text;
+}
+
+function clearEncodedJwt() {
+  jwtEncoderElements.result.value = "";
+  delete jwtEncoderElements.result.dataset.algorithm;
+}
+
+function parseJwtEncoderPart(source, part) {
+  if (!source.trim()) throw new Error(translate("jwtEncodePartEmpty", { part }));
+  try {
+    const value = JSON.parse(source);
+    if (!value || typeof value !== "object" || Array.isArray(value)) throw new Error();
+    return value;
+  } catch {
+    throw new Error(translate("jwtEncodePartInvalid", { part }));
+  }
+}
+
+async function signJwt(signingInput, algorithm, secret) {
+  if (algorithm === "none") return "";
+  if (!secret) throw new Error(translate("jwtSecretRequired", { algorithm }));
+  if (!window.crypto || !window.crypto.subtle) throw new Error(translate("jwtCryptoUnavailable"));
+  const hashes = { HS256: "SHA-256", HS384: "SHA-384", HS512: "SHA-512" };
+  const encoder = new TextEncoder();
+  const key = await window.crypto.subtle.importKey(
+    "raw",
+    encoder.encode(secret),
+    { name: "HMAC", hash: hashes[algorithm] },
+    false,
+    ["sign"]
+  );
+  const signature = await window.crypto.subtle.sign("HMAC", key, encoder.encode(signingInput));
+  return bytesToBase64Url(new Uint8Array(signature));
+}
+
+async function encodeJwt() {
+  try {
+    const header = parseJwtEncoderPart(jwtEncoderElements.header.value, "Header");
+    const payload = parseJwtEncoderPart(jwtEncoderElements.payload.value, "Payload");
+    const algorithm = jwtEncoderElements.algorithm.value;
+    header.alg = algorithm;
+    jwtEncoderElements.header.value = JSON.stringify(header, null, 2);
+    const signingInput = encodeJwtPart(header) + "." + encodeJwtPart(payload);
+    const signature = await signJwt(signingInput, algorithm, jwtEncoderElements.secret.value);
+    jwtEncoderElements.result.value = signingInput + "." + signature;
+    jwtEncoderElements.result.dataset.algorithm = algorithm;
+    const detail = algorithm === "none" ? translate("jwtUnsigned") : translate("jwtAlgorithm", { algorithm });
+    setJwtEncoderStatus("valid", translate("jwtEncoded") + " · " + detail);
+    return true;
+  } catch (error) {
+    clearEncodedJwt();
+    setJwtEncoderStatus("error", error.message || translate("parseError"));
+    return false;
+  }
+}
+
+function refreshJwtEncoderLocalizedState() {
+  const algorithm = jwtEncoderElements.result.dataset.algorithm;
+  if (algorithm) {
+    const detail = algorithm === "none" ? translate("jwtUnsigned") : translate("jwtAlgorithm", { algorithm });
+    setJwtEncoderStatus("valid", translate("jwtEncoded") + " · " + detail);
+  } else if (jwtEncoderElements.header.value || jwtEncoderElements.payload.value || jwtEncoderElements.secret.value) {
+    setJwtEncoderStatus("idle", translate("unsaved"));
+  } else {
+    setJwtEncoderStatus("idle", translate("ready"));
+  }
+}
+
+function syncJwtEncoderAlgorithm() {
+  const algorithm = jwtEncoderElements.algorithm.value;
+  jwtEncoderElements.secretRow.hidden = algorithm === "none";
+  if (jwtEncoderElements.header.value.trim()) {
+    try {
+      const header = parseJwtEncoderPart(jwtEncoderElements.header.value, "Header");
+      header.alg = algorithm;
+      jwtEncoderElements.header.value = JSON.stringify(header, null, 2);
+    } catch {
+      // Keep invalid input intact so the encoder can report it.
+    }
+  }
+  clearEncodedJwt();
+  setJwtEncoderStatus("idle", translate("unsaved"));
+}
+
+document.querySelector("#encodeJwtButton").addEventListener("click", encodeJwt);
+document.querySelector("#jwtEncoderSampleButton").addEventListener("click", async () => {
+  const now = Math.floor(Date.now() / 1000);
+  const algorithm = jwtEncoderElements.algorithm.value;
+  jwtEncoderElements.header.value = JSON.stringify({ alg: algorithm, typ: "JWT" }, null, 2);
+  jwtEncoderElements.payload.value = JSON.stringify({
+    sub: "1234567890",
+    name: "Devtools User",
+    iat: now,
+    exp: now + 3600,
+  }, null, 2);
+  if (algorithm !== "none") jwtEncoderElements.secret.value = "example-secret";
+  await encodeJwt();
+});
+document.querySelector("#clearJwtEncoderButton").addEventListener("click", () => {
+  jwtEncoderElements.header.value = "";
+  jwtEncoderElements.payload.value = "";
+  jwtEncoderElements.secret.value = "";
+  jwtEncoderElements.showSecret.checked = false;
+  jwtEncoderElements.secret.type = "password";
+  clearEncodedJwt();
+  setJwtEncoderStatus("idle", translate("cleared"));
+  jwtEncoderElements.header.focus();
+});
+document.querySelector("#copyEncodedJwtButton").addEventListener("click", async () => {
+  if (!jwtEncoderElements.result.value) {
+    setJwtEncoderStatus("error", translate("createResult"));
+    return;
+  }
+  await navigator.clipboard.writeText(jwtEncoderElements.result.value);
+  showToast(translate("copied"));
+});
+jwtEncoderElements.algorithm.addEventListener("change", syncJwtEncoderAlgorithm);
+jwtEncoderElements.showSecret.addEventListener("change", () => {
+  jwtEncoderElements.secret.type = jwtEncoderElements.showSecret.checked ? "text" : "password";
+});
+[jwtEncoderElements.header, jwtEncoderElements.payload, jwtEncoderElements.secret].forEach((input) => {
+  input.addEventListener("input", () => {
+    clearEncodedJwt();
+    setJwtEncoderStatus("idle", translate("unsaved"));
+  });
+});
+[jwtEncoderElements.header, jwtEncoderElements.payload].forEach((editor) => {
+  editor.addEventListener("keydown", (event) => {
+    if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
+      event.preventDefault();
+      encodeJwt();
+    }
+  });
+});
+syncJwtEncoderAlgorithm();
 
 const caseElements = {
   input: document.querySelector("#caseInput"),
@@ -1584,5 +1824,6 @@ document.querySelector("#copyCaseResultButton").addEventListener("click", async 
 
 applyLanguage(currentLanguage);
 initializeSqlFormatter();
+setJwtMode(currentJwtMode, false);
 setTool(currentTool, false);
 setStatus("idle", translate("ready"));

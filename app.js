@@ -60,7 +60,7 @@ const translations = {
     "copied": "Результат скопійовано",
     "filePrepared": "Файл підготовлено",
     "unsaved": "Є незбережені зміни",
-    "toolCount": "3 інструменти",
+    "toolCount": "4 інструменти",
     "toolsLabel": "Інструменти",
     "formatterNav": "JSON / XML",
     "compareNav": "Порівняння тексту",
@@ -112,7 +112,25 @@ const translations = {
     "positionValue": "рядок {line}, стовпець {column}",
     "noReplacement": "немає",
     "replacementsMade": "Замінено схожих символів: {count}",
-    "noReplaceable": "Схожих символів для заміни немає"
+    "noReplaceable": "Схожих символів для заміни немає",
+    "caseNav": "Регістр тексту",
+    "casePageTitle": "Devtools — Зміна регістру",
+    "caseEyebrow": "Робота з текстом",
+    "caseHeading": "Зміна регістру",
+    "caseActions": "Дії зміни регістру",
+    "caseModeLabel": "Режим регістру",
+    "upperCase": "ВЕРХНІЙ",
+    "lowerCase": "нижній",
+    "titleCase": "Кожне Слово",
+    "sentenceCase": "Речення",
+    "toggleCase": "іНВЕРСІЯ",
+    "caseSource": "Вхідний текст",
+    "caseSourcePlaceholder": "Вставте текст…",
+    "caseResultPlaceholder": "Перетворений текст з’явиться тут",
+    "useCaseResult": "Використати результат як вхідний текст",
+    "caseModeStatus": "Режим: {mode}",
+    "caseEmpty": "Додайте текст для перетворення",
+    "caseTransformed": "Текст перетворено"
   },
   "en": {
     "pageTitle": "Devtools — JSON and XML formatter",
@@ -156,7 +174,7 @@ const translations = {
     "copied": "Result copied",
     "filePrepared": "File prepared",
     "unsaved": "Unsaved changes",
-    "toolCount": "3 tools",
+    "toolCount": "4 tools",
     "toolsLabel": "Tools",
     "formatterNav": "JSON / XML",
     "compareNav": "Text comparison",
@@ -208,7 +226,25 @@ const translations = {
     "positionValue": "line {line}, column {column}",
     "noReplacement": "none",
     "replacementsMade": "Lookalike characters replaced: {count}",
-    "noReplaceable": "No replaceable lookalikes found"
+    "noReplaceable": "No replaceable lookalikes found",
+    "caseNav": "Text case",
+    "casePageTitle": "Devtools — Text case converter",
+    "caseEyebrow": "Text tools",
+    "caseHeading": "Text case converter",
+    "caseActions": "Text case actions",
+    "caseModeLabel": "Case mode",
+    "upperCase": "UPPER CASE",
+    "lowerCase": "lower case",
+    "titleCase": "Title Case",
+    "sentenceCase": "Sentence case",
+    "toggleCase": "tOGGLE cASE",
+    "caseSource": "Source text",
+    "caseSourcePlaceholder": "Paste text…",
+    "caseResultPlaceholder": "Converted text will appear here",
+    "useCaseResult": "Use result as source text",
+    "caseModeStatus": "Mode: {mode}",
+    "caseEmpty": "Add text to convert",
+    "caseTransformed": "Text converted"
   }
 };
 
@@ -307,6 +343,31 @@ function applyLanguage(language, announce = false) {
   document.querySelector("#charColumn").textContent = translate("character");
   document.querySelector("#positionColumn").textContent = translate("position");
   document.querySelector("#replacementColumn").textContent = translate("latinReplacement");
+  document.querySelector("#caseNavLabel").textContent = translate("caseNav");
+  document.querySelector("#caseEyebrow").textContent = translate("caseEyebrow");
+  document.querySelector("#caseHeading").textContent = translate("caseHeading");
+  document.querySelector(".case-toolbar").setAttribute("aria-label", translate("caseActions"));
+  document.querySelector(".case-modes").setAttribute("aria-label", translate("caseModeLabel"));
+  document.querySelector("#upperCaseButton").textContent = translate("upperCase");
+  document.querySelector("#lowerCaseButton").textContent = translate("lowerCase");
+  document.querySelector("#titleCaseButton").textContent = translate("titleCase");
+  document.querySelector("#sentenceCaseButton").textContent = translate("sentenceCase");
+  document.querySelector("#toggleCaseButton").textContent = translate("toggleCase");
+  document.querySelector("#caseSourceTitle").textContent = translate("caseSource");
+  document.querySelector("#caseResultTitle").textContent = translate("result");
+  document.querySelector("#caseInput").setAttribute("aria-label", translate("caseSource"));
+  document.querySelector("#caseInput").placeholder = translate("caseSourcePlaceholder");
+  document.querySelector("#caseResult").setAttribute("aria-label", translate("result"));
+  document.querySelector("#caseResult").placeholder = translate("caseResultPlaceholder");
+  document.querySelector("#useCaseResultButton").title = translate("useCaseResult");
+  document.querySelector("#useCaseResultButton").setAttribute("aria-label", translate("useCaseResult"));
+  document.querySelector("#copyCaseResultButton").title = translate("copyResult");
+  document.querySelector("#copyCaseResultButton").setAttribute("aria-label", translate("copyResult"));
+  document.querySelector("#caseSampleButton").title = translate("insertSample");
+  document.querySelector("#caseSampleButton").setAttribute("aria-label", translate("insertSample"));
+  document.querySelector("#clearCaseButton").title = translate("clear");
+  document.querySelector("#clearCaseButton").setAttribute("aria-label", translate("clear"));
+  document.querySelector("#casePrivacy").textContent = translate("privacy");
   updateEditorMeta();
   refreshLocalizedToolState();
   if (announce && currentTool === "formatter") setStatus("idle", translate("ready"));
@@ -583,7 +644,7 @@ const cyrillicLookalikes = {
 };
 
 function setTool(tool, focus = true) {
-  if (!["formatter", "compare", "cyrillic"].includes(tool)) tool = "formatter";
+  if (!["formatter", "compare", "case", "cyrillic"].includes(tool)) tool = "formatter";
   currentTool = tool;
   localStorage.setItem("devtools-tool", tool);
   document.querySelectorAll("[data-tool-panel]").forEach((panel) => {
@@ -596,13 +657,13 @@ function setTool(tool, focus = true) {
   });
   updateToolPageTitle();
   if (focus) {
-    const target = tool === "formatter" ? elements.source : tool === "compare" ? compareElements.original : cyrillicElements.input;
+    const target = tool === "formatter" ? elements.source : tool === "compare" ? compareElements.original : tool === "case" ? caseElements.input : cyrillicElements.input;
     target.focus();
   }
 }
 
 function updateToolPageTitle() {
-  const key = currentTool === "compare" ? "comparePageTitle" : currentTool === "cyrillic" ? "cyrillicPageTitle" : "pageTitle";
+  const key = currentTool === "compare" ? "comparePageTitle" : currentTool === "case" ? "casePageTitle" : currentTool === "cyrillic" ? "cyrillicPageTitle" : "pageTitle";
   document.title = translate(key);
 }
 
@@ -873,6 +934,7 @@ function refreshLocalizedToolState() {
   updateToolPageTitle();
   updateCompareCounts();
   updateCyrillicCount();
+  refreshCaseResult();
   if (compareElements.output.dataset.rendered || compareElements.original.value || compareElements.changed.value) compareTexts();
   else resetComparisonView();
   if (cyrillicElements.highlight.dataset.rendered || cyrillicElements.input.value) scanCyrillic();
@@ -931,6 +993,149 @@ document.querySelector("#clearCyrillicButton").addEventListener("click", () => {
   updateCyrillicCount();
   resetCyrillicView();
   cyrillicElements.input.focus();
+});
+
+
+const caseElements = {
+  input: document.querySelector("#caseInput"),
+  result: document.querySelector("#caseResult"),
+  inputCount: document.querySelector("#caseInputCount"),
+  status: document.querySelector("#caseStatus"),
+  statusText: document.querySelector("#caseStatusText"),
+};
+
+let currentCaseMode = localStorage.getItem("devtools-case-mode") || "upper";
+
+function caseLocale() {
+  return currentLanguage === "uk" ? "uk-UA" : "en-US";
+}
+
+function titleCaseText(text) {
+  const locale = caseLocale();
+  const lower = text.toLocaleLowerCase(locale);
+  if (typeof Intl.Segmenter === "function") {
+    const segmenter = new Intl.Segmenter(locale, { granularity: "word" });
+    return Array.from(segmenter.segment(lower), (part) => {
+      if (!part.isWordLike) return part.segment;
+      const characters = Array.from(part.segment);
+      return characters.shift().toLocaleUpperCase(locale) + characters.join("");
+    }).join("");
+  }
+  return lower.replace(/(^|\s)(\S)/g, (match, space, char) => space + char.toLocaleUpperCase(locale));
+}
+
+function sentenceCaseText(text) {
+  const locale = caseLocale();
+  const lower = text.toLocaleLowerCase(locale);
+  let capitalizeNext = true;
+  let result = "";
+  for (const char of lower) {
+    const isLetter = char.toLocaleLowerCase(locale) !== char.toLocaleUpperCase(locale);
+    if (isLetter) {
+      result += capitalizeNext ? char.toLocaleUpperCase(locale) : char;
+      capitalizeNext = false;
+    } else {
+      result += char;
+      if (char === "." || char === "!" || char === "?") capitalizeNext = true;
+    }
+  }
+  return result;
+}
+
+function toggleCaseText(text) {
+  const locale = caseLocale();
+  return Array.from(text, (char) => {
+    const lower = char.toLocaleLowerCase(locale);
+    const upper = char.toLocaleUpperCase(locale);
+    if (lower === upper) return char;
+    return char === upper ? lower : upper;
+  }).join("");
+}
+
+function transformCaseText(text, mode) {
+  const locale = caseLocale();
+  if (mode === "lower") return text.toLocaleLowerCase(locale);
+  if (mode === "title") return titleCaseText(text);
+  if (mode === "sentence") return sentenceCaseText(text);
+  if (mode === "toggle") return toggleCaseText(text);
+  return text.toLocaleUpperCase(locale);
+}
+
+function caseModeTranslationKey() {
+  return {
+    upper: "upperCase",
+    lower: "lowerCase",
+    title: "titleCase",
+    sentence: "sentenceCase",
+    toggle: "toggleCase",
+  }[currentCaseMode];
+}
+
+function updateCaseModeButtons() {
+  document.querySelectorAll(".case-mode-button").forEach((button) => {
+    const active = button.dataset.caseMode === currentCaseMode;
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-pressed", String(active));
+  });
+}
+
+function setCaseStatus(text, valid = false) {
+  caseElements.status.className = "status-message " + (valid ? "is-valid" : "is-idle");
+  caseElements.status.querySelector(".status-icon").textContent = valid ? "✓" : "•";
+  caseElements.statusText.textContent = text;
+}
+
+function refreshCaseResult() {
+  caseElements.inputCount.textContent = pluralizeCharacters(caseElements.input.value.length);
+  caseElements.result.value = caseElements.input.value ? transformCaseText(caseElements.input.value, currentCaseMode) : "";
+  updateCaseModeButtons();
+  setCaseStatus(
+    caseElements.input.value
+      ? translate("caseTransformed")
+      : translate("caseModeStatus", { mode: translate(caseModeTranslationKey()) }),
+    Boolean(caseElements.input.value)
+  );
+}
+
+document.querySelectorAll(".case-mode-button").forEach((button) => {
+  button.addEventListener("click", () => {
+    currentCaseMode = button.dataset.caseMode;
+    localStorage.setItem("devtools-case-mode", currentCaseMode);
+    refreshCaseResult();
+  });
+});
+
+caseElements.input.addEventListener("input", refreshCaseResult);
+document.querySelector("#caseSampleButton").addEventListener("click", () => {
+  caseElements.input.value = currentLanguage === "uk"
+    ? "devtools допомагає працювати з ТЕКСТОМ. це друге речення!"
+    : "devtools makes TEXT work easier. this is the second sentence!";
+  refreshCaseResult();
+});
+document.querySelector("#clearCaseButton").addEventListener("click", () => {
+  caseElements.input.value = "";
+  refreshCaseResult();
+  caseElements.input.focus();
+});
+document.querySelector("#useCaseResultButton").addEventListener("click", () => {
+  if (!caseElements.result.value) {
+    setCaseStatus(translate("caseEmpty"));
+    return;
+  }
+  const value = caseElements.result.value;
+  caseElements.input.value = value;
+  caseElements.result.value = value;
+  caseElements.inputCount.textContent = pluralizeCharacters(value.length);
+  setCaseStatus(translate("caseTransformed"), true);
+  caseElements.input.focus();
+});
+document.querySelector("#copyCaseResultButton").addEventListener("click", async () => {
+  if (!caseElements.result.value) {
+    setCaseStatus(translate("caseEmpty"));
+    return;
+  }
+  await navigator.clipboard.writeText(caseElements.result.value);
+  showToast(translate("copied"));
 });
 
 applyLanguage(currentLanguage);

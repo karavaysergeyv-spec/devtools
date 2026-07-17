@@ -15,7 +15,7 @@
         <img src="favicon.svg" alt="" width="32" height="32" />
         <span>Devtools</span>
       </a>
-      <span class="tool-label" id="toolLabel">3 інструменти</span>
+      <span class="tool-label" id="toolLabel">4 інструменти</span>
       <div class="language-switch" role="group" aria-label="Мова інтерфейсу">
         <button class="language-button is-active" type="button" data-language="uk" aria-pressed="true">UA</button>
         <button class="language-button" type="button" data-language="en" aria-pressed="false">EN</button>
@@ -31,6 +31,10 @@
         <button class="tool-nav-button" type="button" role="tab" aria-selected="false" data-tool="compare">
           <span aria-hidden="true">≠</span>
           <span id="compareNavLabel">Порівняння тексту</span>
+        </button>
+        <button class="tool-nav-button" type="button" role="tab" aria-selected="false" data-tool="case">
+          <span aria-hidden="true">Aa</span>
+          <span id="caseNavLabel">Регістр тексту</span>
         </button>
         <button class="tool-nav-button" type="button" role="tab" aria-selected="false" data-tool="cyrillic">
           <span aria-hidden="true">Аa</span>
@@ -141,6 +145,51 @@
             <div class="metric"><strong id="unchangedCount">0</strong><span id="unchangedMetricLabel">без змін</span></div>
           </div>
           <div class="diff-output empty-output" id="diffOutput"><span id="diffEmpty">Результат порівняння з’явиться тут</span></div>
+        </section>
+      </section>
+
+      <section class="tool-panel" id="caseTool" data-tool-panel="case" hidden>
+        <div class="workspace-heading">
+          <div>
+            <p class="eyebrow" id="caseEyebrow">Робота з текстом</p>
+            <h1 id="caseHeading">Зміна регістру</h1>
+          </div>
+        </div>
+
+        <section class="toolbar case-toolbar" aria-label="Дії зміни регістру">
+          <div class="case-modes" role="group" aria-label="Режим регістру">
+            <button class="case-mode-button is-active" type="button" data-case-mode="upper" aria-pressed="true" id="upperCaseButton">ВЕРХНІЙ</button>
+            <button class="case-mode-button" type="button" data-case-mode="lower" aria-pressed="false" id="lowerCaseButton">нижній</button>
+            <button class="case-mode-button" type="button" data-case-mode="title" aria-pressed="false" id="titleCaseButton">Кожне Слово</button>
+            <button class="case-mode-button" type="button" data-case-mode="sentence" aria-pressed="false" id="sentenceCaseButton">Речення</button>
+            <button class="case-mode-button" type="button" data-case-mode="toggle" aria-pressed="false" id="toggleCaseButton">іНВЕРСІЯ</button>
+          </div>
+          <div class="toolbar-group">
+            <button class="icon-button" type="button" id="caseSampleButton" title="Вставити приклад" aria-label="Вставити приклад">✦</button>
+            <button class="icon-button" type="button" id="clearCaseButton" title="Очистити" aria-label="Очистити">×</button>
+          </div>
+        </section>
+
+        <section class="editor-shell case-workspace">
+          <article class="editor-pane">
+            <header class="pane-header"><span class="pane-title" id="caseSourceTitle">Вхідний текст</span><span class="character-count" id="caseInputCount">0 символів</span></header>
+            <textarea class="plain-editor" id="caseInput" spellcheck="false" aria-label="Вхідний текст" placeholder="Вставте текст…"></textarea>
+          </article>
+          <article class="editor-pane output-pane">
+            <header class="pane-header">
+              <span class="pane-title" id="caseResultTitle">Результат</span>
+              <div class="pane-actions">
+                <button class="icon-button small" type="button" id="useCaseResultButton" title="Використати результат як вхідний текст" aria-label="Використати результат як вхідний текст">←</button>
+                <button class="icon-button small" type="button" id="copyCaseResultButton" title="Копіювати результат" aria-label="Копіювати результат">⧉</button>
+              </div>
+            </header>
+            <textarea class="plain-editor" id="caseResult" readonly spellcheck="false" aria-label="Результат" placeholder="Перетворений текст з’явиться тут"></textarea>
+          </article>
+        </section>
+
+        <section class="statusbar" aria-live="polite">
+          <div class="status-message is-idle" id="caseStatus"><span class="status-icon" aria-hidden="true">•</span><span id="caseStatusText">Режим: верхній регістр</span></div>
+          <div class="privacy-note"><span aria-hidden="true">⌁</span><span id="casePrivacy">Дані обробляються лише у вашому браузері</span></div>
         </section>
       </section>
 

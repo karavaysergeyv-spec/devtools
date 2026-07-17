@@ -20,7 +20,7 @@ const samples = {
 const translations = {
   "uk": {
     "pageTitle": "Devtools — JSON та XML форматер",
-    "pageDescription": "Браузерні інструменти для розробників: JSON, XML, SQL, JWT та робота з текстом.",
+    "pageDescription": "Браузерні інструменти для розробників: JSON, XML, SQL, JWT, CRON та робота з текстом.",
     "brandLabel": "Devtools, головна",
     "languageLabel": "Мова інтерфейсу",
     "eyebrow": "Інструменти розробника",
@@ -60,7 +60,7 @@ const translations = {
     "copied": "Результат скопійовано",
     "filePrepared": "Файл підготовлено",
     "unsaved": "Є незбережені зміни",
-    "toolCount": "6 інструментів",
+    "toolCount": "7 інструментів",
     "toolsLabel": "Інструменти",
     "formatterNav": "JSON / XML",
     "compareNav": "Порівняння тексту",
@@ -192,11 +192,72 @@ const translations = {
     "jwtSecretRequired": "Додайте секрет для підпису {algorithm}",
     "jwtCryptoUnavailable": "Web Crypto API недоступний у цьому браузері",
     "jwtEncoded": "JWT створено",
-    "jwtUnsigned": "без підпису"
+    "jwtUnsigned": "без підпису",
+    "cronNav": "CRON",
+    "cronPageTitle": "Devtools — CRON калькулятор",
+    "cronEyebrow": "Інструменти розробника",
+    "cronHeading": "CRON калькулятор",
+    "cronActions": "Дії CRON калькулятора",
+    "cronExpression": "CRON вираз",
+    "analyzeCron": "Аналізувати",
+    "copyCron": "Копіювати CRON",
+    "cronPreset": "Шаблон",
+    "cronChoosePreset": "Виберіть",
+    "cronEveryMinute": "Щохвилини",
+    "cronHourly": "Щогодини",
+    "cronDaily": "Щодня о 09:00",
+    "cronWeekly": "Щопонеділка о 09:00",
+    "cronMonthly": "Щомісяця 1-го о 09:00",
+    "cronTimezone": "Часовий пояс",
+    "cronLocal": "Локальний",
+    "cronLocalTime": "Локальний час",
+    "reset": "Скинути",
+    "cronHowRuns": "Як виконується",
+    "cronNextRuns": "Наступні запуски",
+    "cronBuilderEyebrow": "Конструктор",
+    "cronBuilderTitle": "Створити вираз галочками",
+    "cronBuilderStatus": "5 полів · стандартний CRON",
+    "cronBuilderLimited": "Вираз проаналізовано; спеціальний синтаксис не перенесено в галочки",
+    "cronSelectAll": "Усі",
+    "cronMinute": "Хвилина",
+    "cronHour": "Година",
+    "cronDayOfMonth": "День місяця",
+    "cronMonth": "Місяць",
+    "cronWeekday": "День тижня",
+    "cronValid": "CRON вираз коректний",
+    "cronEmpty": "Додайте CRON вираз",
+    "cronFiveFields": "Використовуйте стандартний CRON з п’яти полів",
+    "cronInvalid": "Некоректний CRON вираз",
+    "cronUnavailable": "Модуль CRON калькулятора не завантажено",
+    "cronNoRuns": "Найближчих запусків не знайдено",
+    "cronAtLeastOne": "Виберіть хоча б одне значення в кожному полі",
+    "cronMonths": [
+      "Січ",
+      "Лют",
+      "Бер",
+      "Кві",
+      "Тра",
+      "Чер",
+      "Лип",
+      "Сер",
+      "Вер",
+      "Жов",
+      "Лис",
+      "Гру"
+    ],
+    "cronWeekdays": [
+      "Нд",
+      "Пн",
+      "Вт",
+      "Ср",
+      "Чт",
+      "Пт",
+      "Сб"
+    ]
   },
   "en": {
     "pageTitle": "Devtools — JSON and XML formatter",
-    "pageDescription": "Browser-based developer tools for JSON, XML, SQL, JWT, and text processing.",
+    "pageDescription": "Browser-based developer tools for JSON, XML, SQL, JWT, CRON, and text processing.",
     "brandLabel": "Devtools, home",
     "languageLabel": "Interface language",
     "eyebrow": "Developer tools",
@@ -236,7 +297,7 @@ const translations = {
     "copied": "Result copied",
     "filePrepared": "File prepared",
     "unsaved": "Unsaved changes",
-    "toolCount": "6 tools",
+    "toolCount": "7 tools",
     "toolsLabel": "Tools",
     "formatterNav": "JSON / XML",
     "compareNav": "Text comparison",
@@ -368,7 +429,68 @@ const translations = {
     "jwtSecretRequired": "Add a secret for the {algorithm} signature",
     "jwtCryptoUnavailable": "Web Crypto API is not available in this browser",
     "jwtEncoded": "JWT created",
-    "jwtUnsigned": "unsigned"
+    "jwtUnsigned": "unsigned",
+    "cronNav": "CRON",
+    "cronPageTitle": "Devtools — CRON calculator",
+    "cronEyebrow": "Developer tools",
+    "cronHeading": "CRON calculator",
+    "cronActions": "CRON calculator actions",
+    "cronExpression": "CRON expression",
+    "analyzeCron": "Analyze",
+    "copyCron": "Copy CRON",
+    "cronPreset": "Preset",
+    "cronChoosePreset": "Choose",
+    "cronEveryMinute": "Every minute",
+    "cronHourly": "Every hour",
+    "cronDaily": "Daily at 09:00",
+    "cronWeekly": "Every Monday at 09:00",
+    "cronMonthly": "Monthly on day 1 at 09:00",
+    "cronTimezone": "Time zone",
+    "cronLocal": "Local",
+    "cronLocalTime": "Local time",
+    "reset": "Reset",
+    "cronHowRuns": "Execution schedule",
+    "cronNextRuns": "Next runs",
+    "cronBuilderEyebrow": "Builder",
+    "cronBuilderTitle": "Build an expression with checkboxes",
+    "cronBuilderStatus": "5 fields · standard CRON",
+    "cronBuilderLimited": "Expression analyzed; special syntax was not transferred to checkboxes",
+    "cronSelectAll": "All",
+    "cronMinute": "Minute",
+    "cronHour": "Hour",
+    "cronDayOfMonth": "Day of month",
+    "cronMonth": "Month",
+    "cronWeekday": "Day of week",
+    "cronValid": "CRON expression is valid",
+    "cronEmpty": "Add a CRON expression",
+    "cronFiveFields": "Use a standard five-field CRON expression",
+    "cronInvalid": "Invalid CRON expression",
+    "cronUnavailable": "CRON calculator module is not loaded",
+    "cronNoRuns": "No upcoming runs found",
+    "cronAtLeastOne": "Select at least one value in every field",
+    "cronMonths": [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+    ],
+    "cronWeekdays": [
+      "Sun",
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat"
+    ]
   }
 };
 
@@ -534,6 +656,34 @@ function applyLanguage(language, announce = false) {
   document.querySelector("#copyEncodedJwtButton").title = translate("copyEncodedJwt");
   document.querySelector("#copyEncodedJwtButton").setAttribute("aria-label", translate("copyEncodedJwt"));
   document.querySelector("#jwtEncoderPrivacy").textContent = translate("privacy");
+  document.querySelector("#cronNavLabel").textContent = translate("cronNav");
+  document.querySelector("#cronEyebrow").textContent = translate("cronEyebrow");
+  document.querySelector("#cronHeading").textContent = translate("cronHeading");
+  document.querySelector(".cron-toolbar").setAttribute("aria-label", translate("cronActions"));
+  document.querySelector("#cronExpressionLabel").textContent = translate("cronExpression");
+  cronElements.expression.setAttribute("aria-label", translate("cronExpression"));
+  setActionLabel("#analyzeCronButton", translate("analyzeCron"));
+  document.querySelector("#copyCronButton").title = translate("copyCron");
+  document.querySelector("#copyCronButton").setAttribute("aria-label", translate("copyCron"));
+  document.querySelector("#cronPresetLabel").textContent = translate("cronPreset");
+  document.querySelector("#cronPreset option[value='']").textContent = translate("cronChoosePreset");
+  document.querySelector("#cronPreset option[value='* * * * *']").textContent = translate("cronEveryMinute");
+  document.querySelector("#cronPreset option[value='0 * * * *']").textContent = translate("cronHourly");
+  document.querySelector("#cronPreset option[value='0 9 * * *']").textContent = translate("cronDaily");
+  document.querySelector("#cronPreset option[value='0 9 * * 1']").textContent = translate("cronWeekly");
+  document.querySelector("#cronPreset option[value='0 9 1 * *']").textContent = translate("cronMonthly");
+  document.querySelector("#cronTimezoneLabel").textContent = translate("cronTimezone");
+  document.querySelector("#cronTimezone option[value='']").textContent = translate("cronLocal");
+  document.querySelector("#cronSampleButton").title = translate("insertSample");
+  document.querySelector("#cronSampleButton").setAttribute("aria-label", translate("insertSample"));
+  document.querySelector("#resetCronButton").title = translate("reset");
+  document.querySelector("#resetCronButton").setAttribute("aria-label", translate("reset"));
+  document.querySelector("#cronDescriptionLabel").textContent = translate("cronHowRuns");
+  document.querySelector("#cronNextRunsTitle").textContent = translate("cronNextRuns");
+  document.querySelector("#cronBuilderEyebrow").textContent = translate("cronBuilderEyebrow");
+  document.querySelector("#cronBuilderTitle").textContent = translate("cronBuilderTitle");
+  document.querySelector("#cronPrivacy").textContent = translate("privacy");
+  renderCronBuilder();
   document.querySelector("#caseNavLabel").textContent = translate("caseNav");
   document.querySelector("#caseEyebrow").textContent = translate("caseEyebrow");
   document.querySelector("#caseHeading").textContent = translate("caseHeading");
@@ -848,6 +998,19 @@ const jwtEncoderElements = {
   statusText: document.querySelector("#jwtEncoderStatusText"),
 };
 
+const cronElements = {
+  expression: document.querySelector("#cronExpression"),
+  preset: document.querySelector("#cronPreset"),
+  timezone: document.querySelector("#cronTimezone"),
+  description: document.querySelector("#cronDescription"),
+  status: document.querySelector("#cronStatus"),
+  statusText: document.querySelector("#cronStatusText"),
+  timezoneDisplay: document.querySelector("#cronTimezoneDisplay"),
+  runs: document.querySelector("#cronRunsList"),
+  fields: document.querySelector("#cronFields"),
+  builderStatus: document.querySelector("#cronBuilderStatus"),
+};
+
 const cyrillicLookalikes = {
   "А": "A", "а": "a", "В": "B", "Е": "E", "е": "e", "К": "K", "М": "M",
   "Н": "H", "О": "O", "о": "o", "Р": "P", "р": "p", "С": "C", "с": "c",
@@ -856,7 +1019,7 @@ const cyrillicLookalikes = {
 };
 
 function setTool(tool, focus = true) {
-  if (!["formatter", "sql", "jwt", "compare", "case", "cyrillic"].includes(tool)) tool = "formatter";
+  if (!["formatter", "sql", "jwt", "cron", "compare", "case", "cyrillic"].includes(tool)) tool = "formatter";
   currentTool = tool;
   localStorage.setItem("devtools-tool", tool);
   document.querySelectorAll("[data-tool-panel]").forEach((panel) => {
@@ -869,13 +1032,13 @@ function setTool(tool, focus = true) {
   });
   updateToolPageTitle();
   if (focus) {
-    const target = tool === "formatter" ? elements.source : tool === "sql" ? sqlElements.input : tool === "jwt" ? jwtFocusTarget() : tool === "compare" ? compareElements.original : tool === "case" ? caseElements.input : cyrillicElements.input;
+    const target = tool === "formatter" ? elements.source : tool === "sql" ? sqlElements.input : tool === "jwt" ? jwtFocusTarget() : tool === "cron" ? cronElements.expression : tool === "compare" ? compareElements.original : tool === "case" ? caseElements.input : cyrillicElements.input;
     target.focus();
   }
 }
 
 function updateToolPageTitle() {
-  const key = currentTool === "sql" ? "sqlPageTitle" : currentTool === "jwt" ? "jwtPageTitle" : currentTool === "compare" ? "comparePageTitle" : currentTool === "case" ? "casePageTitle" : currentTool === "cyrillic" ? "cyrillicPageTitle" : "pageTitle";
+  const key = currentTool === "sql" ? "sqlPageTitle" : currentTool === "jwt" ? "jwtPageTitle" : currentTool === "cron" ? "cronPageTitle" : currentTool === "compare" ? "comparePageTitle" : currentTool === "case" ? "casePageTitle" : currentTool === "cyrillic" ? "cyrillicPageTitle" : "pageTitle";
   document.title = translate(key);
 }
 
@@ -1149,6 +1312,7 @@ function refreshLocalizedToolState() {
   refreshSqlLocalizedState();
   refreshJwtLocalizedState();
   refreshJwtEncoderLocalizedState();
+  refreshCronLocalizedState();
   refreshCaseResult();
   if (compareElements.output.dataset.rendered || compareElements.original.value || compareElements.changed.value) compareTexts();
   else resetComparisonView();
@@ -1680,6 +1844,330 @@ jwtEncoderElements.showSecret.addEventListener("change", () => {
 });
 syncJwtEncoderAlgorithm();
 
+
+const cronFieldDefinitions = [
+  { key: "minute", labelKey: "cronMinute", min: 0, max: 59 },
+  { key: "hour", labelKey: "cronHour", min: 0, max: 23 },
+  { key: "day", labelKey: "cronDayOfMonth", min: 1, max: 31 },
+  { key: "month", labelKey: "cronMonth", min: 1, max: 12 },
+  { key: "weekday", labelKey: "cronWeekday", min: 0, max: 6 },
+];
+
+const cronBuilderState = Object.fromEntries(
+  cronFieldDefinitions.map((field) => [
+    field.key,
+    new Set(Array.from({ length: field.max - field.min + 1 }, (_, index) => field.min + index)),
+  ])
+);
+
+function cronValues(field) {
+  return Array.from({ length: field.max - field.min + 1 }, (_, index) => field.min + index);
+}
+
+function cronValueLabel(field, value) {
+  if (field.key === "month") return translations[currentLanguage].cronMonths[value - 1];
+  if (field.key === "weekday") return translations[currentLanguage].cronWeekdays[value];
+  if (field.key === "minute" || field.key === "hour") return String(value).padStart(2, "0");
+  return String(value);
+}
+
+function renderCronBuilder() {
+  if (!cronElements.fields) return;
+  const fragment = document.createDocumentFragment();
+  cronFieldDefinitions.forEach((field) => {
+    const selected = cronBuilderState[field.key];
+    const fieldset = document.createElement("fieldset");
+    fieldset.className = "cron-field-group cron-field-" + field.key;
+    const legend = document.createElement("legend");
+    const title = document.createElement("span");
+    title.textContent = translate(field.labelKey);
+    const range = document.createElement("small");
+    range.textContent = field.min + "–" + field.max;
+    title.append(range);
+    const allLabel = document.createElement("label");
+    allLabel.className = "check-control cron-select-all";
+    const allInput = document.createElement("input");
+    allInput.type = "checkbox";
+    allInput.dataset.cronAll = field.key;
+    allInput.checked = selected.size === field.max - field.min + 1;
+    allInput.indeterminate = selected.size > 0 && !allInput.checked;
+    const allText = document.createElement("span");
+    allText.textContent = translate("cronSelectAll");
+    allLabel.append(allInput, allText);
+    legend.append(title, allLabel);
+    const grid = document.createElement("div");
+    grid.className = "cron-check-grid";
+    cronValues(field).forEach((value) => {
+      const label = document.createElement("label");
+      label.className = "cron-check";
+      const input = document.createElement("input");
+      input.type = "checkbox";
+      input.dataset.cronField = field.key;
+      input.dataset.cronValue = String(value);
+      input.checked = selected.has(value);
+      const text = document.createElement("span");
+      text.textContent = cronValueLabel(field, value);
+      label.append(input, text);
+      grid.append(label);
+    });
+    fieldset.append(legend, grid);
+    fragment.append(fieldset);
+  });
+  cronElements.fields.replaceChildren(fragment);
+}
+
+function compressCronValues(field, selected) {
+  const values = Array.from(selected).sort((a, b) => a - b);
+  const fullSize = field.max - field.min + 1;
+  if (values.length === fullSize) return "*";
+  if (values.length > 2 && values[0] === field.min) {
+    const step = values[1] - values[0];
+    if (step > 1 && values.every((value, index) => index === 0 || value - values[index - 1] === step) && values.at(-1) + step > field.max) return "*/" + step;
+  }
+  const parts = [];
+  let start = values[0];
+  let previous = values[0];
+  for (let index = 1; index <= values.length; index += 1) {
+    const value = values[index];
+    if (value === previous + 1) {
+      previous = value;
+      continue;
+    }
+    if (previous - start >= 2) parts.push(start + "-" + previous);
+    else if (previous === start) parts.push(String(start));
+    else parts.push(String(start), String(previous));
+    start = value;
+    previous = value;
+  }
+  return parts.join(",");
+}
+
+function cronExpressionFromBuilder() {
+  const parts = [];
+  for (const field of cronFieldDefinitions) {
+    const selected = cronBuilderState[field.key];
+    if (!selected.size) return "";
+    parts.push(compressCronValues(field, selected));
+  }
+  return parts.join(" ");
+}
+
+function updateCronFromBuilder() {
+  const expression = cronExpressionFromBuilder();
+  if (!expression) {
+    setCronStatus("error", translate("cronAtLeastOne"));
+    return;
+  }
+  cronElements.expression.value = expression;
+  cronElements.preset.value = "";
+  analyzeCron(false);
+}
+
+
+function normalizeCronAliases(value, field) {
+  const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+  const weekdays = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+  let normalized = value.toUpperCase();
+  if (field.key === "month") months.forEach((alias, index) => { normalized = normalized.replaceAll(alias, String(index + 1)); });
+  if (field.key === "weekday") weekdays.forEach((alias, index) => { normalized = normalized.replaceAll(alias, String(index)); });
+  return normalized;
+}
+
+function expandCronField(source, field) {
+  const selected = new Set();
+  const normalized = normalizeCronAliases(source, field);
+  if (!/^[0-9*/,\-]+$/.test(normalized)) throw new Error();
+  normalized.split(",").forEach((part) => {
+    const pieces = part.split("/");
+    if (pieces.length > 2) throw new Error();
+    const step = pieces[1] ? Number(pieces[1]) : 1;
+    if (!Number.isInteger(step) || step < 1) throw new Error();
+    let start;
+    let end;
+    if (pieces[0] === "*") {
+      start = field.min;
+      end = field.max;
+    } else if (pieces[0].includes("-")) {
+      const range = pieces[0].split("-").map(Number);
+      if (range.length !== 2) throw new Error();
+      [start, end] = range;
+    } else {
+      start = Number(pieces[0]);
+      end = start;
+    }
+    if (field.key === "weekday") {
+      if (start === 7) start = 0;
+      if (end === 7) end = 0;
+    }
+    if (!Number.isInteger(start) || !Number.isInteger(end) || start < field.min || end > field.max || start > end) throw new Error();
+    for (let value = start; value <= end; value += step) selected.add(value);
+  });
+  if (!selected.size) throw new Error();
+  return selected;
+}
+
+function syncCronBuilder(expression) {
+  try {
+    const parts = expression.split(/\s+/);
+    const nextState = {};
+    cronFieldDefinitions.forEach((field, index) => { nextState[field.key] = expandCronField(parts[index], field); });
+    Object.entries(nextState).forEach(([key, values]) => { cronBuilderState[key] = values; });
+    cronElements.builderStatus.textContent = translate("cronBuilderStatus");
+    renderCronBuilder();
+    return true;
+  } catch {
+    cronElements.builderStatus.textContent = translate("cronBuilderLimited");
+    return false;
+  }
+}
+
+function setCronStatus(type, text) {
+  cronElements.status.className = "status-message is-" + type;
+  cronElements.status.querySelector(".status-icon").textContent = type === "valid" ? "✓" : type === "error" ? "!" : "•";
+  cronElements.statusText.textContent = text;
+}
+
+function cronTimezoneOptions() {
+  const timezone = cronElements.timezone.value;
+  return timezone ? { timezone, paused: true } : { paused: true };
+}
+
+function formatCronRun(date) {
+  return new Intl.DateTimeFormat(currentLanguage === "uk" ? "uk-UA" : "en-GB", {
+    dateStyle: "medium",
+    timeStyle: "medium",
+    timeZone: cronElements.timezone.value || undefined,
+  }).format(date);
+}
+
+function renderCronRuns(dates) {
+  const fragment = document.createDocumentFragment();
+  dates.forEach((date, index) => {
+    const item = document.createElement("li");
+    const number = document.createElement("span");
+    number.textContent = String(index + 1).padStart(2, "0");
+    const time = document.createElement("time");
+    time.dateTime = date.toISOString();
+    time.textContent = formatCronRun(date);
+    item.append(number, time);
+    fragment.append(item);
+  });
+  if (!dates.length) {
+    const item = document.createElement("li");
+    item.className = "is-empty";
+    item.textContent = translate("cronNoRuns");
+    fragment.append(item);
+  }
+  cronElements.runs.replaceChildren(fragment);
+}
+
+function analyzeCron(focusOnError = true) {
+  const expression = cronElements.expression.value.trim().replace(/\s+/g, " ");
+  cronElements.expression.value = expression;
+  if (!expression) {
+    cronElements.description.textContent = "—";
+    cronElements.runs.replaceChildren();
+    setCronStatus("error", translate("cronEmpty"));
+    if (focusOnError) cronElements.expression.focus();
+    return false;
+  }
+  if (expression.split(" ").length !== 5) {
+    cronElements.description.textContent = "—";
+    cronElements.runs.replaceChildren();
+    setCronStatus("error", translate("cronFiveFields"));
+    return false;
+  }
+  if (typeof window.Cron !== "function" || !window.cronstrue || typeof window.cronstrue.toString !== "function") {
+    setCronStatus("error", translate("cronUnavailable"));
+    return false;
+  }
+  try {
+    const schedule = new window.Cron(expression, cronTimezoneOptions());
+    const dates = schedule.nextRuns(10);
+    cronElements.description.textContent = window.cronstrue.toString(expression, {
+      locale: currentLanguage,
+      use24HourTimeFormat: true,
+      verbose: true,
+    });
+    cronElements.timezoneDisplay.textContent = cronElements.timezone.value || translate("cronLocalTime");
+    renderCronRuns(dates);
+    setCronStatus("valid", translate("cronValid"));
+    cronElements.description.dataset.rendered = "true";
+    syncCronBuilder(expression);
+    return true;
+  } catch (error) {
+    cronElements.description.textContent = "—";
+    cronElements.runs.replaceChildren();
+    setCronStatus("error", translate("cronInvalid") + ": " + (error.message || translate("parseError")));
+    return false;
+  }
+}
+
+function refreshCronLocalizedState() {
+  renderCronBuilder();
+  if (cronElements.expression.value) analyzeCron(false);
+  else setCronStatus("idle", translate("ready"));
+}
+
+
+function initializeCronBuilder() {
+  renderCronBuilder();
+  cronElements.fields.addEventListener("change", (event) => {
+    const input = event.target;
+    if (!(input instanceof HTMLInputElement)) return;
+    if (input.dataset.cronAll) {
+      const field = cronFieldDefinitions.find((item) => item.key === input.dataset.cronAll);
+      cronBuilderState[field.key] = input.checked ? new Set(cronValues(field)) : new Set();
+    } else if (input.dataset.cronField) {
+      const selected = cronBuilderState[input.dataset.cronField];
+      const value = Number(input.dataset.cronValue);
+      if (input.checked) selected.add(value);
+      else selected.delete(value);
+    }
+    renderCronBuilder();
+    updateCronFromBuilder();
+  });
+}
+
+document.querySelector("#analyzeCronButton").addEventListener("click", () => analyzeCron());
+document.querySelector("#copyCronButton").addEventListener("click", async () => {
+  if (!cronElements.expression.value.trim()) {
+    setCronStatus("error", translate("cronEmpty"));
+    return;
+  }
+  await navigator.clipboard.writeText(cronElements.expression.value.trim());
+  showToast(translate("copied"));
+});
+document.querySelector("#cronSampleButton").addEventListener("click", () => {
+  cronElements.expression.value = "*/15 9-17 * * 1-5";
+  cronElements.preset.value = "";
+  analyzeCron(false);
+});
+document.querySelector("#resetCronButton").addEventListener("click", () => {
+  cronElements.expression.value = "* * * * *";
+  cronElements.preset.value = "* * * * *";
+  analyzeCron(false);
+  cronElements.expression.focus();
+});
+cronElements.expression.addEventListener("input", () => {
+  delete cronElements.description.dataset.rendered;
+  setCronStatus("idle", translate("unsaved"));
+});
+cronElements.expression.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    analyzeCron();
+  }
+});
+cronElements.preset.addEventListener("change", () => {
+  if (!cronElements.preset.value) return;
+  cronElements.expression.value = cronElements.preset.value;
+  analyzeCron(false);
+});
+cronElements.timezone.addEventListener("change", () => {
+  if (cronElements.expression.value) analyzeCron(false);
+});
+
 const caseElements = {
   input: document.querySelector("#caseInput"),
   result: document.querySelector("#caseResult"),
@@ -1822,6 +2310,7 @@ document.querySelector("#copyCaseResultButton").addEventListener("click", async 
   showToast(translate("copied"));
 });
 
+initializeCronBuilder();
 applyLanguage(currentLanguage);
 initializeSqlFormatter();
 setJwtMode(currentJwtMode, false);

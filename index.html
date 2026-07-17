@@ -15,7 +15,7 @@
         <img src="favicon.svg" alt="" width="32" height="32" />
         <span>Devtools</span>
       </a>
-      <span class="tool-label" id="toolLabel">6 інструментів</span>
+      <span class="tool-label" id="toolLabel">7 інструментів</span>
       <div class="language-switch" role="group" aria-label="Мова інтерфейсу">
         <button class="language-button is-active" type="button" data-language="uk" aria-pressed="true">UA</button>
         <button class="language-button" type="button" data-language="en" aria-pressed="false">EN</button>
@@ -35,6 +35,10 @@
         <button class="tool-nav-button" type="button" role="tab" aria-selected="false" data-tool="jwt">
           <span aria-hidden="true">JWT</span>
           <span id="jwtNavLabel">JWT</span>
+        </button>
+        <button class="tool-nav-button" type="button" role="tab" aria-selected="false" data-tool="cron">
+          <span aria-hidden="true">*/5</span>
+          <span id="cronNavLabel">CRON</span>
         </button>
         <button class="tool-nav-button" type="button" role="tab" aria-selected="false" data-tool="compare">
           <span aria-hidden="true">≠</span>
@@ -255,6 +259,61 @@
         </div>
       </section>
 
+      <section class="tool-panel" id="cronTool" data-tool-panel="cron" hidden>
+        <div class="workspace-heading">
+          <div>
+            <p class="eyebrow" id="cronEyebrow">Інструменти розробника</p>
+            <h1 id="cronHeading">CRON калькулятор</h1>
+          </div>
+        </div>
+
+        <section class="toolbar cron-toolbar" aria-label="Дії CRON калькулятора">
+          <div class="cron-expression-control">
+            <label for="cronExpression" id="cronExpressionLabel">CRON вираз</label>
+            <input type="text" id="cronExpression" value="*/15 9-17 * * 1-5" spellcheck="false" autocomplete="off" aria-label="CRON вираз" />
+            <button class="button button-primary" type="button" id="analyzeCronButton"><span aria-hidden="true">▶</span> Аналізувати</button>
+            <button class="icon-button" type="button" id="copyCronButton" title="Копіювати CRON" aria-label="Копіювати CRON">⧉</button>
+          </div>
+          <div class="cron-toolbar-options">
+            <label class="select-control"><span id="cronPresetLabel">Шаблон</span><select id="cronPreset"><option value="">Виберіть</option><option value="* * * * *">Щохвилини</option><option value="0 * * * *">Щогодини</option><option value="0 9 * * *">Щодня о 09:00</option><option value="0 9 * * 1">Щопонеділка о 09:00</option><option value="0 9 1 * *">Щомісяця 1-го о 09:00</option></select></label>
+            <label class="select-control"><span id="cronTimezoneLabel">Часовий пояс</span><select id="cronTimezone"><option value="">Локальний</option><option value="UTC">UTC</option><option value="Europe/Kyiv">Europe/Kyiv</option><option value="Europe/London">Europe/London</option><option value="America/New_York">America/New_York</option><option value="Asia/Tokyo">Asia/Tokyo</option></select></label>
+            <button class="icon-button" type="button" id="cronSampleButton" title="Вставити приклад" aria-label="Вставити приклад">✦</button>
+            <button class="icon-button" type="button" id="resetCronButton" title="Скинути" aria-label="Скинути">↺</button>
+          </div>
+        </section>
+
+        <section class="cron-summary" aria-live="polite">
+          <div class="cron-description-block">
+            <span class="section-label" id="cronDescriptionLabel">Як виконується</span>
+            <strong id="cronDescription">Кожні 15 хвилин, з 09:00 до 17:59, з понеділка по п’ятницю</strong>
+          </div>
+          <div class="status-message is-idle" id="cronStatus"><span class="status-icon" aria-hidden="true">•</span><span id="cronStatusText">Готово до роботи</span></div>
+        </section>
+
+        <section class="result-section cron-runs-section">
+          <header class="result-header">
+            <div><h2 id="cronNextRunsTitle">Наступні запуски</h2><span class="result-status" id="cronTimezoneDisplay">Локальний час</span></div>
+          </header>
+          <ol class="cron-runs-list" id="cronRunsList"></ol>
+        </section>
+
+        <section class="cron-builder-section">
+          <header class="cron-builder-header">
+            <div>
+              <span class="section-label" id="cronBuilderEyebrow">Конструктор</span>
+              <h2 id="cronBuilderTitle">Створити вираз галочками</h2>
+            </div>
+            <span class="result-status" id="cronBuilderStatus">5 полів · стандартний CRON</span>
+          </header>
+          <div class="cron-fields" id="cronFields"></div>
+        </section>
+
+        <section class="statusbar">
+          <div class="privacy-note"><span aria-hidden="true">⌁</span><span id="cronPrivacy">Дані обробляються лише у вашому браузері</span></div>
+          <div class="cron-format-hint"><code>minute hour day month weekday</code></div>
+        </section>
+      </section>
+
       <section class="tool-panel" id="compareTool" data-tool-panel="compare" hidden>
         <div class="workspace-heading">
           <div>
@@ -394,6 +453,8 @@
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
     <script src="vendor/sql-formatter/sql-formatter.min.js"></script>
+    <script src="vendor/croner/croner.umd.js"></script>
+    <script src="vendor/cronstrue/cronstrue-i18n.min.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

@@ -59,7 +59,60 @@ const translations = {
     "createResult": "Спочатку створіть результат",
     "copied": "Результат скопійовано",
     "filePrepared": "Файл підготовлено",
-    "unsaved": "Є незбережені зміни"
+    "unsaved": "Є незбережені зміни",
+    "toolCount": "3 інструменти",
+    "toolsLabel": "Інструменти",
+    "formatterNav": "JSON / XML",
+    "compareNav": "Порівняння тексту",
+    "cyrillicNav": "Пошук кирилиці",
+    "comparePageTitle": "Devtools — Порівняння тексту",
+    "compareEyebrow": "Робота з текстом",
+    "compareHeading": "Порівняння тексту",
+    "compareActions": "Дії порівняння",
+    "compare": "Порівняти",
+    "swap": "Поміняти місцями",
+    "clear": "Очистити",
+    "ignoreCase": "Ігнорувати регістр",
+    "ignoreWhitespace": "Ігнорувати пробіли",
+    "originalText": "Оригінал",
+    "changedText": "Змінений текст",
+    "originalAria": "Оригінальний текст",
+    "changedAria": "Змінений текст",
+    "originalPlaceholder": "Вставте перший текст…",
+    "changedPlaceholder": "Вставте другий текст…",
+    "differences": "Відмінності",
+    "awaitingComparison": "Очікує порівняння",
+    "added": "Додано",
+    "removed": "Видалено",
+    "unchanged": "Без змін",
+    "diffEmpty": "Результат порівняння з’явиться тут",
+    "compareEmpty": "Додайте хоча б один текст",
+    "identical": "Тексти однакові",
+    "differencesFound": "Знайдено відмінностей: {count}",
+    "tooManyLines": "Максимум 1500 рядків у кожному тексті",
+    "cyrillicPageTitle": "Devtools — Пошук кирилиці",
+    "cyrillicEyebrow": "Перевірка символів",
+    "cyrillicHeading": "Пошук кирилиці в латинському тексті",
+    "cyrillicActions": "Дії перевірки символів",
+    "scanCyrillic": "Знайти кирилицю",
+    "replaceLookalikes": "Замінити схожі",
+    "textToCheck": "Текст для перевірки",
+    "textToCheckPlaceholder": "Вставте латинський текст…",
+    "highlightedText": "Підсвічений текст",
+    "awaitingScan": "Очікує перевірки",
+    "cyrillicEmpty": "Кириличні символи будуть підсвічені тут",
+    "foundCharacters": "Знайдені символи",
+    "character": "Символ",
+    "position": "Позиція",
+    "latinReplacement": "Латинська заміна",
+    "noMatches": "Збігів поки немає",
+    "charactersFound": "Знайдено символів: {count}",
+    "uniqueFound": "унікальних: {count}",
+    "noCyrillic": "Кирилицю не знайдено",
+    "positionValue": "рядок {line}, стовпець {column}",
+    "noReplacement": "немає",
+    "replacementsMade": "Замінено схожих символів: {count}",
+    "noReplaceable": "Схожих символів для заміни немає"
   },
   "en": {
     "pageTitle": "Devtools — JSON and XML formatter",
@@ -102,12 +155,66 @@ const translations = {
     "createResult": "Create a result first",
     "copied": "Result copied",
     "filePrepared": "File prepared",
-    "unsaved": "Unsaved changes"
+    "unsaved": "Unsaved changes",
+    "toolCount": "3 tools",
+    "toolsLabel": "Tools",
+    "formatterNav": "JSON / XML",
+    "compareNav": "Text comparison",
+    "cyrillicNav": "Cyrillic detector",
+    "comparePageTitle": "Devtools — Text comparison",
+    "compareEyebrow": "Text tools",
+    "compareHeading": "Text comparison",
+    "compareActions": "Comparison actions",
+    "compare": "Compare",
+    "swap": "Swap texts",
+    "clear": "Clear",
+    "ignoreCase": "Ignore case",
+    "ignoreWhitespace": "Ignore whitespace",
+    "originalText": "Original",
+    "changedText": "Changed text",
+    "originalAria": "Original text",
+    "changedAria": "Changed text",
+    "originalPlaceholder": "Paste the first text…",
+    "changedPlaceholder": "Paste the second text…",
+    "differences": "Differences",
+    "awaitingComparison": "Awaiting comparison",
+    "added": "Added",
+    "removed": "Removed",
+    "unchanged": "Unchanged",
+    "diffEmpty": "Comparison results will appear here",
+    "compareEmpty": "Add at least one text",
+    "identical": "Texts are identical",
+    "differencesFound": "Differences found: {count}",
+    "tooManyLines": "Maximum 1500 lines in each text",
+    "cyrillicPageTitle": "Devtools — Cyrillic detector",
+    "cyrillicEyebrow": "Character check",
+    "cyrillicHeading": "Find Cyrillic in Latin text",
+    "cyrillicActions": "Character check actions",
+    "scanCyrillic": "Find Cyrillic",
+    "replaceLookalikes": "Replace lookalikes",
+    "textToCheck": "Text to check",
+    "textToCheckPlaceholder": "Paste Latin text…",
+    "highlightedText": "Highlighted text",
+    "awaitingScan": "Awaiting scan",
+    "cyrillicEmpty": "Cyrillic characters will be highlighted here",
+    "foundCharacters": "Found characters",
+    "character": "Character",
+    "position": "Position",
+    "latinReplacement": "Latin replacement",
+    "noMatches": "No matches yet",
+    "charactersFound": "Characters found: {count}",
+    "uniqueFound": "unique: {count}",
+    "noCyrillic": "No Cyrillic characters found",
+    "positionValue": "line {line}, column {column}",
+    "noReplacement": "none",
+    "replacementsMade": "Lookalike characters replaced: {count}",
+    "noReplaceable": "No replaceable lookalikes found"
   }
 };
 
 let currentMode = "json";
 let currentLanguage = localStorage.getItem("devtools-language") || "uk";
+let currentTool = localStorage.getItem("devtools-tool") || "formatter";
 let toastTimer;
 
 function translate(key, values = {}) {
@@ -133,7 +240,7 @@ function applyLanguage(language, announce = false) {
   document.querySelector(".brand").setAttribute("aria-label", translate("brandLabel"));
   document.querySelector(".language-switch").setAttribute("aria-label", translate("languageLabel"));
   document.querySelector(".eyebrow").textContent = translate("eyebrow");
-  document.querySelector("#page-title").textContent = translate("heading");
+  document.querySelector("#formatterHeading").textContent = translate("heading");
   document.querySelector(".mode-switch").setAttribute("aria-label", translate("formatLabel"));
   document.querySelector(".toolbar").setAttribute("aria-label", translate("editorActions"));
   document.querySelector(".editor-pane .pane-title").textContent = translate("sourceData");
@@ -157,8 +264,52 @@ function applyLanguage(language, announce = false) {
     button.classList.toggle("is-active", active);
     button.setAttribute("aria-pressed", String(active));
   });
+  document.querySelector("#toolLabel").textContent = translate("toolCount");
+  document.querySelector(".tool-nav").setAttribute("aria-label", translate("toolsLabel"));
+  document.querySelector("#formatterNavLabel").textContent = translate("formatterNav");
+  document.querySelector("#compareNavLabel").textContent = translate("compareNav");
+  document.querySelector("#cyrillicNavLabel").textContent = translate("cyrillicNav");
+  document.querySelector("#compareEyebrow").textContent = translate("compareEyebrow");
+  document.querySelector("#compareHeading").textContent = translate("compareHeading");
+  document.querySelector(".compare-toolbar").setAttribute("aria-label", translate("compareActions"));
+  setActionLabel("#compareButton", translate("compare"));
+  setActionLabel("#swapTextsButton", translate("swap"));
+  document.querySelector("#clearCompareButton").title = translate("clear");
+  document.querySelector("#clearCompareButton").setAttribute("aria-label", translate("clear"));
+  document.querySelector("#ignoreCaseLabel").textContent = translate("ignoreCase");
+  document.querySelector("#ignoreWhitespaceLabel").textContent = translate("ignoreWhitespace");
+  document.querySelector("#originalTextTitle").textContent = translate("originalText");
+  document.querySelector("#changedTextTitle").textContent = translate("changedText");
+  document.querySelector("#originalText").setAttribute("aria-label", translate("originalAria"));
+  document.querySelector("#changedText").setAttribute("aria-label", translate("changedAria"));
+  document.querySelector("#originalText").placeholder = translate("originalPlaceholder");
+  document.querySelector("#changedText").placeholder = translate("changedPlaceholder");
+  document.querySelector("#differenceTitle").textContent = translate("differences");
+  document.querySelector("#addedLegend").textContent = translate("added");
+  document.querySelector("#removedLegend").textContent = translate("removed");
+  document.querySelector("#addedMetricLabel").textContent = translate("added").toLowerCase();
+  document.querySelector("#removedMetricLabel").textContent = translate("removed").toLowerCase();
+  document.querySelector("#unchangedMetricLabel").textContent = translate("unchanged").toLowerCase();
+  document.querySelector("#cyrillicEyebrow").textContent = translate("cyrillicEyebrow");
+  document.querySelector("#cyrillicHeading").textContent = translate("cyrillicHeading");
+  document.querySelector(".cyrillic-toolbar").setAttribute("aria-label", translate("cyrillicActions"));
+  setActionLabel("#scanCyrillicButton", translate("scanCyrillic"));
+  setActionLabel("#replaceCyrillicButton", translate("replaceLookalikes"));
+  document.querySelector("#cyrillicSampleButton").title = translate("insertSample");
+  document.querySelector("#cyrillicSampleButton").setAttribute("aria-label", translate("insertSample"));
+  document.querySelector("#clearCyrillicButton").title = translate("clear");
+  document.querySelector("#clearCyrillicButton").setAttribute("aria-label", translate("clear"));
+  document.querySelector("#textToCheckTitle").textContent = translate("textToCheck");
+  document.querySelector("#cyrillicInput").setAttribute("aria-label", translate("textToCheck"));
+  document.querySelector("#cyrillicInput").placeholder = translate("textToCheckPlaceholder");
+  document.querySelector("#highlightedTextTitle").textContent = translate("highlightedText");
+  document.querySelector("#foundCharactersTitle").textContent = translate("foundCharacters");
+  document.querySelector("#charColumn").textContent = translate("character");
+  document.querySelector("#positionColumn").textContent = translate("position");
+  document.querySelector("#replacementColumn").textContent = translate("latinReplacement");
   updateEditorMeta();
-  if (announce) setStatus("idle", translate("ready"));
+  refreshLocalizedToolState();
+  if (announce && currentTool === "formatter") setStatus("idle", translate("ready"));
 }
 function pluralizeCharacters(count) {
   const lastTwo = count % 100;
@@ -402,5 +553,386 @@ const dropTarget = elements.source.closest(".editor-wrap");
 
 dropTarget.addEventListener("drop", (event) => loadFile(event.dataTransfer.files[0]));
 
+
+const compareElements = {
+  original: document.querySelector("#originalText"),
+  changed: document.querySelector("#changedText"),
+  status: document.querySelector("#compareStatus"),
+  output: document.querySelector("#diffOutput"),
+  added: document.querySelector("#addedCount"),
+  removed: document.querySelector("#removedCount"),
+  unchanged: document.querySelector("#unchangedCount"),
+  originalCount: document.querySelector("#originalCount"),
+  changedCount: document.querySelector("#changedCount"),
+};
+
+const cyrillicElements = {
+  input: document.querySelector("#cyrillicInput"),
+  inputCount: document.querySelector("#cyrillicInputCount"),
+  status: document.querySelector("#cyrillicStatus"),
+  highlight: document.querySelector("#cyrillicHighlight"),
+  summary: document.querySelector("#characterSummary"),
+  tableBody: document.querySelector("#characterTableBody"),
+};
+
+const cyrillicLookalikes = {
+  "А": "A", "а": "a", "В": "B", "Е": "E", "е": "e", "К": "K", "М": "M",
+  "Н": "H", "О": "O", "о": "o", "Р": "P", "р": "p", "С": "C", "с": "c",
+  "Т": "T", "Х": "X", "х": "x", "У": "Y", "у": "y", "І": "I", "і": "i",
+  "Ј": "J", "ј": "j", "Ѕ": "S", "ѕ": "s"
+};
+
+function setTool(tool, focus = true) {
+  if (!["formatter", "compare", "cyrillic"].includes(tool)) tool = "formatter";
+  currentTool = tool;
+  localStorage.setItem("devtools-tool", tool);
+  document.querySelectorAll("[data-tool-panel]").forEach((panel) => {
+    panel.hidden = panel.dataset.toolPanel !== tool;
+  });
+  document.querySelectorAll(".tool-nav-button").forEach((button) => {
+    const active = button.dataset.tool === tool;
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-selected", String(active));
+  });
+  updateToolPageTitle();
+  if (focus) {
+    const target = tool === "formatter" ? elements.source : tool === "compare" ? compareElements.original : cyrillicElements.input;
+    target.focus();
+  }
+}
+
+function updateToolPageTitle() {
+  const key = currentTool === "compare" ? "comparePageTitle" : currentTool === "cyrillic" ? "cyrillicPageTitle" : "pageTitle";
+  document.title = translate(key);
+}
+
+function setCompareStatus(text, type = "") {
+  compareElements.status.textContent = text;
+  compareElements.status.className = "result-status" + (type ? " is-" + type : "");
+}
+
+function updateCompareCounts() {
+  compareElements.originalCount.textContent = pluralizeCharacters(compareElements.original.value.length);
+  compareElements.changedCount.textContent = pluralizeCharacters(compareElements.changed.value.length);
+}
+
+function resetComparisonView() {
+  compareElements.output.className = "diff-output empty-output";
+  compareElements.output.textContent = translate("diffEmpty");
+  compareElements.output.dataset.rendered = "";
+  compareElements.added.textContent = "0";
+  compareElements.removed.textContent = "0";
+  compareElements.unchanged.textContent = "0";
+  setCompareStatus(translate("awaitingComparison"));
+}
+
+function normalizeDiffLine(line) {
+  let value = line;
+  if (document.querySelector("#ignoreWhitespace").checked) value = value.replace(/\s+/g, " ").trim();
+  if (document.querySelector("#ignoreCase").checked) value = value.toLocaleLowerCase();
+  return value;
+}
+
+function buildLineDiff(originalLines, changedLines) {
+  const left = originalLines.map(normalizeDiffLine);
+  const right = changedLines.map(normalizeDiffLine);
+  const rows = Array.from({ length: left.length + 1 }, () => new Uint32Array(right.length + 1));
+  for (let i = left.length - 1; i >= 0; i -= 1) {
+    for (let j = right.length - 1; j >= 0; j -= 1) {
+      rows[i][j] = left[i] === right[j] ? rows[i + 1][j + 1] + 1 : Math.max(rows[i + 1][j], rows[i][j + 1]);
+    }
+  }
+  const operations = [];
+  let i = 0;
+  let j = 0;
+  while (i < left.length && j < right.length) {
+    if (left[i] === right[j]) {
+      operations.push({ type: "equal", text: originalLines[i] });
+      i += 1;
+      j += 1;
+    } else if (rows[i + 1][j] >= rows[i][j + 1]) {
+      operations.push({ type: "removed", text: originalLines[i++] });
+    } else {
+      operations.push({ type: "added", text: changedLines[j++] });
+    }
+  }
+  while (i < left.length) operations.push({ type: "removed", text: originalLines[i++] });
+  while (j < right.length) operations.push({ type: "added", text: changedLines[j++] });
+  return operations;
+}
+
+function renderDiff(operations) {
+  const fragment = document.createDocumentFragment();
+  let originalLine = 1;
+  let changedLine = 1;
+  const counts = { added: 0, removed: 0, equal: 0 };
+  operations.forEach((operation) => {
+    const row = document.createElement("div");
+    row.className = "diff-line " + operation.type;
+    const originalNumber = document.createElement("span");
+    originalNumber.className = "diff-line-number";
+    const changedNumber = document.createElement("span");
+    changedNumber.className = "diff-line-number";
+    const content = document.createElement("span");
+    content.className = "diff-line-code";
+    if (operation.type === "equal") {
+      originalNumber.textContent = originalLine++;
+      changedNumber.textContent = changedLine++;
+      content.textContent = "  " + operation.text;
+      counts.equal += 1;
+    } else if (operation.type === "removed") {
+      originalNumber.textContent = originalLine++;
+      content.textContent = "− " + operation.text;
+      counts.removed += 1;
+    } else {
+      changedNumber.textContent = changedLine++;
+      content.textContent = "+ " + operation.text;
+      counts.added += 1;
+    }
+    row.append(originalNumber, changedNumber, content);
+    fragment.append(row);
+  });
+  compareElements.output.replaceChildren(fragment);
+  compareElements.output.className = "diff-output";
+  compareElements.output.dataset.rendered = "true";
+  compareElements.added.textContent = counts.added;
+  compareElements.removed.textContent = counts.removed;
+  compareElements.unchanged.textContent = counts.equal;
+  const changedCount = counts.added + counts.removed;
+  setCompareStatus(changedCount ? translate("differencesFound", { count: changedCount }) : translate("identical"), changedCount ? "warning" : "success");
+}
+
+function compareTexts() {
+  const originalValue = compareElements.original.value;
+  const changedValue = compareElements.changed.value;
+  updateCompareCounts();
+  if (!originalValue && !changedValue) {
+    resetComparisonView();
+    setCompareStatus(translate("compareEmpty"), "error");
+    return;
+  }
+  const originalLines = originalValue.split("\n");
+  const changedLines = changedValue.split("\n");
+  if (originalLines.length > 1500 || changedLines.length > 1500) {
+    resetComparisonView();
+    setCompareStatus(translate("tooManyLines"), "error");
+    return;
+  }
+  renderDiff(buildLineDiff(originalLines, changedLines));
+}
+
+function isCyrillicCharacter(char) {
+  const point = char.codePointAt(0);
+  return (point >= 0x0400 && point <= 0x052f) ||
+    (point >= 0x2de0 && point <= 0x2dff) ||
+    (point >= 0xa640 && point <= 0xa69f) ||
+    (point >= 0x1c80 && point <= 0x1c8f);
+}
+
+function findCyrillicCharacters(text) {
+  const matches = [];
+  let line = 1;
+  let column = 1;
+  let index = 0;
+  for (const char of text) {
+    if (isCyrillicCharacter(char)) {
+      matches.push({
+        char,
+        index: index + 1,
+        line,
+        column,
+        code: "U+" + char.codePointAt(0).toString(16).toUpperCase().padStart(4, "0"),
+        replacement: cyrillicLookalikes[char] || "",
+      });
+    }
+    if (char === "\n") {
+      line += 1;
+      column = 1;
+    } else {
+      column += 1;
+    }
+    index += char.length;
+  }
+  return matches;
+}
+
+function setCyrillicStatus(text, type = "") {
+  cyrillicElements.status.textContent = text;
+  cyrillicElements.status.className = "result-status" + (type ? " is-" + type : "");
+}
+
+function updateCyrillicCount() {
+  cyrillicElements.inputCount.textContent = pluralizeCharacters(cyrillicElements.input.value.length);
+}
+
+function resetCyrillicView() {
+  cyrillicElements.highlight.className = "highlight-output empty-output";
+  cyrillicElements.highlight.textContent = translate("cyrillicEmpty");
+  cyrillicElements.highlight.dataset.rendered = "";
+  cyrillicElements.summary.textContent = translate("charactersFound", { count: 0 });
+  cyrillicElements.tableBody.replaceChildren();
+  const row = document.createElement("tr");
+  row.className = "empty-row";
+  const cell = document.createElement("td");
+  cell.colSpan = 4;
+  cell.textContent = translate("noMatches");
+  row.append(cell);
+  cyrillicElements.tableBody.append(row);
+  setCyrillicStatus(translate("awaitingScan"));
+}
+
+function renderCyrillicHighlight(text) {
+  const fragment = document.createDocumentFragment();
+  for (const char of text) {
+    if (isCyrillicCharacter(char)) {
+      const marker = document.createElement("span");
+      marker.className = "cyrillic-char";
+      marker.textContent = char;
+      marker.title = "U+" + char.codePointAt(0).toString(16).toUpperCase().padStart(4, "0");
+      fragment.append(marker);
+    } else {
+      fragment.append(document.createTextNode(char));
+    }
+  }
+  cyrillicElements.highlight.replaceChildren(fragment);
+  cyrillicElements.highlight.className = "highlight-output";
+  cyrillicElements.highlight.dataset.rendered = "true";
+}
+
+function renderCharacterTable(matches) {
+  const fragment = document.createDocumentFragment();
+  matches.slice(0, 300).forEach((match) => {
+    const row = document.createElement("tr");
+    const character = document.createElement("td");
+    const position = document.createElement("td");
+    const unicode = document.createElement("td");
+    const replacement = document.createElement("td");
+    character.textContent = match.char;
+    position.textContent = translate("positionValue", { line: match.line, column: match.column });
+    const code = document.createElement("code");
+    code.textContent = match.code;
+    unicode.append(code);
+    if (match.replacement) {
+      const value = document.createElement("span");
+      value.className = "replacement-value";
+      value.textContent = match.replacement;
+      replacement.append(value);
+    } else {
+      replacement.className = "no-replacement";
+      replacement.textContent = translate("noReplacement");
+    }
+    row.append(character, position, unicode, replacement);
+    fragment.append(row);
+  });
+  cyrillicElements.tableBody.replaceChildren(fragment);
+}
+
+function scanCyrillic() {
+  const text = cyrillicElements.input.value;
+  updateCyrillicCount();
+  if (!text) {
+    resetCyrillicView();
+    return [];
+  }
+  const matches = findCyrillicCharacters(text);
+  renderCyrillicHighlight(text);
+  if (!matches.length) {
+    cyrillicElements.tableBody.replaceChildren();
+    const row = document.createElement("tr");
+    row.className = "empty-row";
+    const cell = document.createElement("td");
+    cell.colSpan = 4;
+    cell.textContent = translate("noMatches");
+    row.append(cell);
+    cyrillicElements.tableBody.append(row);
+    cyrillicElements.summary.textContent = translate("charactersFound", { count: 0 });
+    setCyrillicStatus(translate("noCyrillic"), "success");
+    return matches;
+  }
+  renderCharacterTable(matches);
+  const unique = new Set(matches.map((match) => match.char)).size;
+  cyrillicElements.summary.textContent = translate("charactersFound", { count: matches.length }) + " · " + translate("uniqueFound", { count: unique });
+  setCyrillicStatus(translate("charactersFound", { count: matches.length }), "warning");
+  return matches;
+}
+
+function replaceCyrillicLookalikes() {
+  let count = 0;
+  cyrillicElements.input.value = Array.from(cyrillicElements.input.value).map((char) => {
+    if (cyrillicLookalikes[char]) {
+      count += 1;
+      return cyrillicLookalikes[char];
+    }
+    return char;
+  }).join("");
+  scanCyrillic();
+  setCyrillicStatus(count ? translate("replacementsMade", { count }) : translate("noReplaceable"), count ? "success" : "warning");
+}
+
+function refreshLocalizedToolState() {
+  updateToolPageTitle();
+  updateCompareCounts();
+  updateCyrillicCount();
+  if (compareElements.output.dataset.rendered || compareElements.original.value || compareElements.changed.value) compareTexts();
+  else resetComparisonView();
+  if (cyrillicElements.highlight.dataset.rendered || cyrillicElements.input.value) scanCyrillic();
+  else resetCyrillicView();
+}
+
+document.querySelectorAll(".tool-nav-button").forEach((button) => {
+  button.addEventListener("click", () => setTool(button.dataset.tool));
+});
+[compareElements.original, compareElements.changed].forEach((editor) => {
+  editor.addEventListener("input", updateCompareCounts);
+  editor.addEventListener("keydown", (event) => {
+    if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
+      event.preventDefault();
+      compareTexts();
+    }
+  });
+});
+document.querySelector("#compareButton").addEventListener("click", compareTexts);
+document.querySelector("#swapTextsButton").addEventListener("click", () => {
+  const value = compareElements.original.value;
+  compareElements.original.value = compareElements.changed.value;
+  compareElements.changed.value = value;
+  updateCompareCounts();
+  if (compareElements.output.dataset.rendered) compareTexts();
+});
+document.querySelector("#clearCompareButton").addEventListener("click", () => {
+  compareElements.original.value = "";
+  compareElements.changed.value = "";
+  updateCompareCounts();
+  resetComparisonView();
+  compareElements.original.focus();
+});
+document.querySelector("#ignoreCase").addEventListener("change", () => {
+  if (compareElements.output.dataset.rendered) compareTexts();
+});
+document.querySelector("#ignoreWhitespace").addEventListener("change", () => {
+  if (compareElements.output.dataset.rendered) compareTexts();
+});
+cyrillicElements.input.addEventListener("input", updateCyrillicCount);
+cyrillicElements.input.addEventListener("keydown", (event) => {
+  if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
+    event.preventDefault();
+    scanCyrillic();
+  }
+});
+document.querySelector("#scanCyrillicButton").addEventListener("click", scanCyrillic);
+document.querySelector("#replaceCyrillicButton").addEventListener("click", replaceCyrillicLookalikes);
+document.querySelector("#cyrillicSampleButton").addEventListener("click", () => {
+  cyrillicElements.input.value = "https://micrоsoft.com\npаypal account\nsecure-token";
+  updateCyrillicCount();
+  scanCyrillic();
+});
+document.querySelector("#clearCyrillicButton").addEventListener("click", () => {
+  cyrillicElements.input.value = "";
+  updateCyrillicCount();
+  resetCyrillicView();
+  cyrillicElements.input.focus();
+});
+
 applyLanguage(currentLanguage);
+setTool(currentTool, false);
 setStatus("idle", translate("ready"));

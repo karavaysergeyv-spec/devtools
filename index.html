@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Браузерні інструменти для розробників: форматування та перевірка JSON і XML." />
+    <meta name="theme-color" content="#f5f7f8" />
+    <title>Devtools — JSON та XML форматер</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Devtools, головна">
+        <img src="favicon.svg" alt="" width="32" height="32" />
+        <span>Devtools</span>
+      </a>
+      <span class="tool-label">Formatter</span>
+      <div class="language-switch" role="group" aria-label="Мова інтерфейсу">
+        <button class="language-button is-active" type="button" data-language="uk" aria-pressed="true">UA</button>
+        <button class="language-button" type="button" data-language="en" aria-pressed="false">EN</button>
+      </div>
+      <a class="github-link" href="https://github.com/karavaysergeyv-spec/devtools" target="_blank" rel="noreferrer">
+        GitHub
+        <span aria-hidden="true">↗</span>
+      </a>
+    </header>
+
+    <main class="workspace">
+      <section class="workspace-heading" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">Інструменти розробника</p>
+          <h1 id="page-title">JSON та XML форматер</h1>
+        </div>
+        <div class="mode-switch" role="tablist" aria-label="Формат даних">
+          <button class="mode-button is-active" type="button" role="tab" aria-selected="true" data-mode="json">JSON</button>
+          <button class="mode-button" type="button" role="tab" aria-selected="false" data-mode="xml">XML</button>
+        </div>
+      </section>
+
+      <section class="toolbar" aria-label="Дії редактора">
+        <div class="toolbar-group primary-actions">
+          <button class="button button-primary" type="button" id="formatButton">
+            <span aria-hidden="true">≡</span>
+            Форматувати
+          </button>
+          <button class="button" type="button" id="minifyButton">
+            <span aria-hidden="true">⇥</span>
+            Мініфікувати
+          </button>
+          <button class="button" type="button" id="validateButton">
+            <span aria-hidden="true">✓</span>
+            Перевірити
+          </button>
+        </div>
+        <div class="toolbar-group secondary-actions">
+          <label class="button file-button" for="fileInput">
+            <span aria-hidden="true">↑</span>
+            Відкрити файл
+          </label>
+          <input id="fileInput" type="file" accept=".json,.xml,application/json,application/xml,text/xml" />
+          <button class="icon-button" type="button" id="sampleButton" title="Вставити приклад" aria-label="Вставити приклад">✦</button>
+          <button class="icon-button" type="button" id="clearButton" title="Очистити редактор" aria-label="Очистити редактор">×</button>
+        </div>
+      </section>
+
+      <section class="editor-shell">
+        <article class="editor-pane">
+          <header class="pane-header">
+            <div>
+              <span class="pane-title">Вхідні дані</span>
+              <span class="data-type" id="inputType">JSON</span>
+            </div>
+            <span class="character-count" id="inputCount">0 символов</span>
+          </header>
+          <div class="editor-wrap">
+            <pre class="line-numbers" id="inputLines" aria-hidden="true">1</pre>
+            <textarea id="sourceEditor" spellcheck="false" autocomplete="off" aria-label="Вхідні дані" placeholder="Вставте JSON або перетягніть файл сюди…"></textarea>
+          </div>
+        </article>
+
+        <article class="editor-pane output-pane">
+          <header class="pane-header">
+            <div>
+              <span class="pane-title">Результат</span>
+              <span class="data-type" id="outputType">JSON</span>
+            </div>
+            <div class="pane-actions">
+              <button class="icon-button small" type="button" id="copyButton" title="Копіювати результат" aria-label="Копіювати результат">⧉</button>
+              <button class="icon-button small" type="button" id="downloadButton" title="Завантажити результат" aria-label="Завантажити результат">↓</button>
+            </div>
+          </header>
+          <div class="editor-wrap">
+            <pre class="line-numbers" id="outputLines" aria-hidden="true">1</pre>
+            <textarea id="resultEditor" readonly spellcheck="false" aria-label="Результат" placeholder="Відформатований результат з’явиться тут"></textarea>
+          </div>
+        </article>
+      </section>
+
+      <section class="statusbar" aria-live="polite">
+        <div class="status-message is-idle" id="statusMessage">
+          <span class="status-icon" aria-hidden="true">•</span>
+          <span id="statusText">Готово до роботи</span>
+        </div>
+        <div class="privacy-note">
+          <span aria-hidden="true">⌁</span>
+          Дані обробляються лише у вашому браузері
+        </div>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="app.js"></script>
+  </body>
+</html>

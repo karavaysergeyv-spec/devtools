@@ -131,11 +131,10 @@ const translations = {
     "caseModeStatus": "Режим: {mode}",
     "caseEmpty": "Додайте текст для перетворення",
     "caseTransformed": "Текст перетворено",
-    "sqlNav": "SQL / PL/SQL",
-    "sqlPageTitle": "Devtools — SQL та PL/SQL форматер",
+    "sqlNav": "SQL",
+    "sqlPageTitle": "Devtools — SQL форматер",
     "sqlEyebrow": "Інструменти розробника",
-    "sqlHeading": "SQL та PL/SQL форматер",
-    "sqlDialectLabel": "Діалект SQL",
+    "sqlHeading": "SQL форматер",
     "sqlActions": "Дії SQL форматера",
     "validateSyntax": "Перевірити синтаксис",
     "keywordCase": "Ключові слова",
@@ -265,11 +264,10 @@ const translations = {
     "caseModeStatus": "Mode: {mode}",
     "caseEmpty": "Add text to convert",
     "caseTransformed": "Text converted",
-    "sqlNav": "SQL / PL/SQL",
-    "sqlPageTitle": "Devtools — SQL and PL/SQL formatter",
+    "sqlNav": "SQL",
+    "sqlPageTitle": "Devtools — SQL formatter",
     "sqlEyebrow": "Developer tools",
-    "sqlHeading": "SQL and PL/SQL formatter",
-    "sqlDialectLabel": "SQL dialect",
+    "sqlHeading": "SQL formatter",
     "sqlActions": "SQL formatter actions",
     "validateSyntax": "Check syntax",
     "keywordCase": "Keywords",
@@ -386,7 +384,6 @@ function applyLanguage(language, announce = false) {
   document.querySelector("#sqlNavLabel").textContent = translate("sqlNav");
   document.querySelector("#sqlEyebrow").textContent = translate("sqlEyebrow");
   document.querySelector("#sqlHeading").textContent = translate("sqlHeading");
-  document.querySelector("#sqlDialectSwitch").setAttribute("aria-label", translate("sqlDialectLabel"));
   document.querySelector(".sql-toolbar").setAttribute("aria-label", translate("sqlActions"));
   setActionLabel("#formatSqlButton", translate("format"));
   setActionLabel("#validateSqlButton", translate("validateSyntax"));
@@ -1077,12 +1074,7 @@ const sqlElements = {
   statusText: document.querySelector("#sqlStatusText"),
 };
 
-const sqlSamples = {
-  sql: "select u.id,u.email,count(o.id) as order_count from users u left join orders o on o.user_id=u.id where u.active=1 and o.created_at>=current_date-30 group by u.id,u.email having count(o.id)>0 order by order_count desc;",
-  plsql: "declare v_count number; begin select count(*) into v_count from users where active=1; dbms_output.put_line(v_count); exception when others then dbms_output.put_line(sqlerrm); end;",
-};
-
-let currentSqlDialect = localStorage.getItem("devtools-sql-dialect") || "sql";
+const sqlSample = "select u.id,u.email,count(o.id) as order_count from users u left join orders o on o.user_id=u.id where u.active=1 and o.created_at>=current_date-30 group by u.id,u.email having count(o.id)>0 order by order_count desc;";
 
 function setSqlStatus(type, text) {
   sqlElements.status.className = "status-message is-" + type;
@@ -1097,28 +1089,19 @@ function updateSqlMeta() {
 }
 
 function sqlDialectLabel() {
-  return currentSqlDialect === "plsql" ? "PL/SQL" : "SQL";
+  return "SQL";
 }
 
-function setSqlDialect(dialect, focus = true) {
-  currentSqlDialect = dialect === "plsql" ? "plsql" : "sql";
-  localStorage.setItem("devtools-sql-dialect", currentSqlDialect);
-  document.querySelectorAll("[data-sql-dialect]").forEach((button) => {
-    const active = button.dataset.sqlDialect === currentSqlDialect;
-    button.classList.toggle("is-active", active);
-    button.setAttribute("aria-selected", String(active));
-  });
+function initializeSqlFormatter() {
   const label = sqlDialectLabel();
   sqlElements.inputType.textContent = label;
   sqlElements.outputType.textContent = label;
-  if (sqlElements.result.value) formatSql(true);
-  else setSqlStatus("idle", translate("ready"));
-  if (focus) sqlElements.input.focus();
+  setSqlStatus("idle", translate("ready"));
 }
 
 function sqlFormatOptions() {
   return {
-    language: currentSqlDialect,
+    language: "sql",
     keywordCase: document.querySelector("#sqlKeywordCase").value,
     tabWidth: Number(document.querySelector("#sqlIndentSize").value),
     useTabs: false,
@@ -1162,13 +1145,10 @@ function refreshSqlLocalizedState() {
   else setSqlStatus("idle", translate("ready"));
 }
 
-document.querySelectorAll("[data-sql-dialect]").forEach((button) => {
-  button.addEventListener("click", () => setSqlDialect(button.dataset.sqlDialect));
-});
 document.querySelector("#formatSqlButton").addEventListener("click", () => formatSql(true));
 document.querySelector("#validateSqlButton").addEventListener("click", () => formatSql(false));
 document.querySelector("#sqlSampleButton").addEventListener("click", () => {
-  sqlElements.input.value = sqlSamples[currentSqlDialect];
+  sqlElements.input.value = sqlSample;
   sqlElements.result.value = "";
   updateSqlMeta();
   formatSql(true);
@@ -1196,7 +1176,7 @@ document.querySelector("#downloadSqlResultButton").addEventListener("click", () 
   const blob = new Blob([sqlElements.result.value], { type: "application/sql;charset=utf-8" });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
-  link.download = "formatted-" + currentSqlDialect + ".sql";
+  link.download = "formatted-sql.sql";
   link.click();
   URL.revokeObjectURL(link.href);
   showToast(translate("filePrepared"));
@@ -1374,6 +1354,6 @@ document.querySelector("#copyCaseResultButton").addEventListener("click", async 
 });
 
 applyLanguage(currentLanguage);
-setSqlDialect(currentSqlDialect, false);
+initializeSqlFormatter();
 setTool(currentTool, false);
 setStatus("idle", translate("ready"));

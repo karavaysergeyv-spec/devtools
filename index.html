@@ -15,7 +15,7 @@
         <img src="favicon.svg" alt="" width="32" height="32" />
         <span>Devtools</span>
       </a>
-      <span class="tool-label" id="toolLabel">4 інструменти</span>
+      <span class="tool-label" id="toolLabel">5 інструментів</span>
       <div class="language-switch" role="group" aria-label="Мова інтерфейсу">
         <button class="language-button is-active" type="button" data-language="uk" aria-pressed="true">UA</button>
         <button class="language-button" type="button" data-language="en" aria-pressed="false">EN</button>
@@ -27,6 +27,10 @@
         <button class="tool-nav-button is-active" type="button" role="tab" aria-selected="true" data-tool="formatter">
           <span aria-hidden="true">{ }</span>
           <span id="formatterNavLabel">JSON / XML</span>
+        </button>
+        <button class="tool-nav-button" type="button" role="tab" aria-selected="false" data-tool="sql">
+          <span aria-hidden="true">SQL</span>
+          <span id="sqlNavLabel">SQL / PL/SQL</span>
         </button>
         <button class="tool-nav-button" type="button" role="tab" aria-selected="false" data-tool="compare">
           <span aria-hidden="true">≠</span>
@@ -97,6 +101,63 @@
         <section class="statusbar" aria-live="polite">
           <div class="status-message is-idle" id="statusMessage"><span class="status-icon" aria-hidden="true">•</span><span id="statusText">Готово до роботи</span></div>
           <div class="privacy-note"><span aria-hidden="true">⌁</span><span id="formatterPrivacy">Дані обробляються лише у вашому браузері</span></div>
+        </section>
+      </section>
+
+      <section class="tool-panel" id="sqlTool" data-tool-panel="sql" hidden>
+        <div class="workspace-heading">
+          <div>
+            <p class="eyebrow" id="sqlEyebrow">Інструменти розробника</p>
+            <h1 id="sqlHeading">SQL та PL/SQL форматер</h1>
+          </div>
+          <div class="mode-switch" role="tablist" aria-label="Діалект SQL" id="sqlDialectSwitch">
+            <button class="mode-button is-active" type="button" role="tab" aria-selected="true" data-sql-dialect="sql">SQL</button>
+            <button class="mode-button" type="button" role="tab" aria-selected="false" data-sql-dialect="plsql">PL/SQL</button>
+          </div>
+        </div>
+
+        <section class="toolbar sql-toolbar" aria-label="Дії SQL форматера">
+          <div class="toolbar-group">
+            <button class="button button-primary" type="button" id="formatSqlButton"><span aria-hidden="true">≡</span> Форматувати</button>
+            <button class="button" type="button" id="validateSqlButton"><span aria-hidden="true">✓</span> Перевірити синтаксис</button>
+          </div>
+          <div class="sql-options">
+            <label class="select-control"><span id="keywordCaseLabel">Ключові слова</span><select id="sqlKeywordCase"><option value="upper">ВЕРХНІ</option><option value="lower">нижні</option><option value="preserve">Як у коді</option></select></label>
+            <label class="select-control"><span id="indentSizeLabel">Відступ</span><select id="sqlIndentSize"><option value="2">2</option><option value="4">4</option></select></label>
+            <button class="icon-button" type="button" id="sqlSampleButton" title="Вставити приклад" aria-label="Вставити приклад">✦</button>
+            <button class="icon-button" type="button" id="clearSqlButton" title="Очистити" aria-label="Очистити">×</button>
+          </div>
+        </section>
+
+        <section class="editor-shell sql-workspace">
+          <article class="editor-pane">
+            <header class="pane-header">
+              <div><span class="pane-title" id="sqlSourceTitle">SQL код</span><span class="data-type" id="sqlInputType">SQL</span></div>
+              <span class="character-count" id="sqlInputCount">0 символів</span>
+            </header>
+            <div class="editor-wrap">
+              <pre class="line-numbers" id="sqlInputLines" aria-hidden="true">1</pre>
+              <textarea id="sqlInput" spellcheck="false" autocomplete="off" aria-label="SQL код" placeholder="Вставте SQL запит…"></textarea>
+            </div>
+          </article>
+          <article class="editor-pane output-pane">
+            <header class="pane-header">
+              <div><span class="pane-title" id="sqlResultTitle">Результат</span><span class="data-type" id="sqlOutputType">SQL</span></div>
+              <div class="pane-actions">
+                <button class="icon-button small" type="button" id="copySqlResultButton" title="Копіювати результат" aria-label="Копіювати результат">⧉</button>
+                <button class="icon-button small" type="button" id="downloadSqlResultButton" title="Завантажити результат" aria-label="Завантажити результат">↓</button>
+              </div>
+            </header>
+            <div class="editor-wrap">
+              <pre class="line-numbers" id="sqlOutputLines" aria-hidden="true">1</pre>
+              <textarea id="sqlResult" readonly spellcheck="false" aria-label="Результат" placeholder="Відформатований SQL з’явиться тут"></textarea>
+            </div>
+          </article>
+        </section>
+
+        <section class="statusbar" aria-live="polite">
+          <div class="status-message is-idle" id="sqlStatus"><span class="status-icon" aria-hidden="true">•</span><span id="sqlStatusText">Готово до роботи</span></div>
+          <div class="privacy-note"><span aria-hidden="true">⌁</span><span id="sqlPrivacy">Дані обробляються лише у вашому браузері</span></div>
         </section>
       </section>
 
@@ -238,6 +299,7 @@
     </main>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="vendor/sql-formatter/sql-formatter.min.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

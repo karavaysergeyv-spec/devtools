@@ -60,7 +60,7 @@ const translations = {
     "copied": "Результат скопійовано",
     "filePrepared": "Файл підготовлено",
     "unsaved": "Є незбережені зміни",
-    "toolCount": "4 інструменти",
+    "toolCount": "5 інструментів",
     "toolsLabel": "Інструменти",
     "formatterNav": "JSON / XML",
     "compareNav": "Порівняння тексту",
@@ -130,7 +130,27 @@ const translations = {
     "useCaseResult": "Використати результат як вхідний текст",
     "caseModeStatus": "Режим: {mode}",
     "caseEmpty": "Додайте текст для перетворення",
-    "caseTransformed": "Текст перетворено"
+    "caseTransformed": "Текст перетворено",
+    "sqlNav": "SQL / PL/SQL",
+    "sqlPageTitle": "Devtools — SQL та PL/SQL форматер",
+    "sqlEyebrow": "Інструменти розробника",
+    "sqlHeading": "SQL та PL/SQL форматер",
+    "sqlDialectLabel": "Діалект SQL",
+    "sqlActions": "Дії SQL форматера",
+    "validateSyntax": "Перевірити синтаксис",
+    "keywordCase": "Ключові слова",
+    "keywordUpper": "ВЕРХНІ",
+    "keywordLower": "нижні",
+    "keywordPreserve": "Як у коді",
+    "indentSize": "Відступ",
+    "sqlSource": "SQL код",
+    "sqlPlaceholder": "Вставте SQL запит…",
+    "sqlResultPlaceholder": "Відформатований SQL з’явиться тут",
+    "sqlEmpty": "Додайте SQL код для обробки",
+    "sqlFormatted": "SQL відформатовано",
+    "sqlSyntaxValid": "Синтаксис прийнято парсером {dialect}",
+    "sqlFormatterUnavailable": "Модуль SQL форматера не завантажено",
+    "sqlInvalid": "Помилка синтаксису {dialect}"
   },
   "en": {
     "pageTitle": "Devtools — JSON and XML formatter",
@@ -174,7 +194,7 @@ const translations = {
     "copied": "Result copied",
     "filePrepared": "File prepared",
     "unsaved": "Unsaved changes",
-    "toolCount": "4 tools",
+    "toolCount": "5 tools",
     "toolsLabel": "Tools",
     "formatterNav": "JSON / XML",
     "compareNav": "Text comparison",
@@ -244,7 +264,27 @@ const translations = {
     "useCaseResult": "Use result as source text",
     "caseModeStatus": "Mode: {mode}",
     "caseEmpty": "Add text to convert",
-    "caseTransformed": "Text converted"
+    "caseTransformed": "Text converted",
+    "sqlNav": "SQL / PL/SQL",
+    "sqlPageTitle": "Devtools — SQL and PL/SQL formatter",
+    "sqlEyebrow": "Developer tools",
+    "sqlHeading": "SQL and PL/SQL formatter",
+    "sqlDialectLabel": "SQL dialect",
+    "sqlActions": "SQL formatter actions",
+    "validateSyntax": "Check syntax",
+    "keywordCase": "Keywords",
+    "keywordUpper": "UPPER",
+    "keywordLower": "lower",
+    "keywordPreserve": "Preserve",
+    "indentSize": "Indent",
+    "sqlSource": "SQL code",
+    "sqlPlaceholder": "Paste an SQL query…",
+    "sqlResultPlaceholder": "Formatted SQL will appear here",
+    "sqlEmpty": "Add SQL code to process",
+    "sqlFormatted": "SQL formatted",
+    "sqlSyntaxValid": "Syntax accepted by the {dialect} parser",
+    "sqlFormatterUnavailable": "SQL formatter module is not loaded",
+    "sqlInvalid": "{dialect} syntax error"
   }
 };
 
@@ -343,6 +383,33 @@ function applyLanguage(language, announce = false) {
   document.querySelector("#charColumn").textContent = translate("character");
   document.querySelector("#positionColumn").textContent = translate("position");
   document.querySelector("#replacementColumn").textContent = translate("latinReplacement");
+  document.querySelector("#sqlNavLabel").textContent = translate("sqlNav");
+  document.querySelector("#sqlEyebrow").textContent = translate("sqlEyebrow");
+  document.querySelector("#sqlHeading").textContent = translate("sqlHeading");
+  document.querySelector("#sqlDialectSwitch").setAttribute("aria-label", translate("sqlDialectLabel"));
+  document.querySelector(".sql-toolbar").setAttribute("aria-label", translate("sqlActions"));
+  setActionLabel("#formatSqlButton", translate("format"));
+  setActionLabel("#validateSqlButton", translate("validateSyntax"));
+  document.querySelector("#keywordCaseLabel").textContent = translate("keywordCase");
+  document.querySelector("#sqlKeywordCase option[value=upper]").textContent = translate("keywordUpper");
+  document.querySelector("#sqlKeywordCase option[value=lower]").textContent = translate("keywordLower");
+  document.querySelector("#sqlKeywordCase option[value=preserve]").textContent = translate("keywordPreserve");
+  document.querySelector("#indentSizeLabel").textContent = translate("indentSize");
+  document.querySelector("#sqlSourceTitle").textContent = translate("sqlSource");
+  document.querySelector("#sqlResultTitle").textContent = translate("result");
+  document.querySelector("#sqlInput").setAttribute("aria-label", translate("sqlSource"));
+  document.querySelector("#sqlInput").placeholder = translate("sqlPlaceholder");
+  document.querySelector("#sqlResult").setAttribute("aria-label", translate("result"));
+  document.querySelector("#sqlResult").placeholder = translate("sqlResultPlaceholder");
+  document.querySelector("#sqlSampleButton").title = translate("insertSample");
+  document.querySelector("#sqlSampleButton").setAttribute("aria-label", translate("insertSample"));
+  document.querySelector("#clearSqlButton").title = translate("clear");
+  document.querySelector("#clearSqlButton").setAttribute("aria-label", translate("clear"));
+  document.querySelector("#copySqlResultButton").title = translate("copyResult");
+  document.querySelector("#copySqlResultButton").setAttribute("aria-label", translate("copyResult"));
+  document.querySelector("#downloadSqlResultButton").title = translate("downloadResult");
+  document.querySelector("#downloadSqlResultButton").setAttribute("aria-label", translate("downloadResult"));
+  document.querySelector("#sqlPrivacy").textContent = translate("privacy");
   document.querySelector("#caseNavLabel").textContent = translate("caseNav");
   document.querySelector("#caseEyebrow").textContent = translate("caseEyebrow");
   document.querySelector("#caseHeading").textContent = translate("caseHeading");
@@ -480,7 +547,7 @@ function transform(action) {
 
 function setMode(mode) {
   currentMode = mode;
-  document.querySelectorAll(".mode-button").forEach((button) => {
+  document.querySelectorAll("[data-mode]").forEach((button) => {
     const active = button.dataset.mode === mode;
     button.classList.toggle("is-active", active);
     button.setAttribute("aria-selected", String(active));
@@ -513,7 +580,7 @@ async function loadFile(file) {
   setStatus("idle", translate("fileLoaded", { name: file.name }));
 }
 
-document.querySelectorAll(".mode-button").forEach((button) => {
+document.querySelectorAll("[data-mode]").forEach((button) => {
   button.addEventListener("click", () => setMode(button.dataset.mode));
 });
 
@@ -644,7 +711,7 @@ const cyrillicLookalikes = {
 };
 
 function setTool(tool, focus = true) {
-  if (!["formatter", "compare", "case", "cyrillic"].includes(tool)) tool = "formatter";
+  if (!["formatter", "sql", "compare", "case", "cyrillic"].includes(tool)) tool = "formatter";
   currentTool = tool;
   localStorage.setItem("devtools-tool", tool);
   document.querySelectorAll("[data-tool-panel]").forEach((panel) => {
@@ -657,13 +724,13 @@ function setTool(tool, focus = true) {
   });
   updateToolPageTitle();
   if (focus) {
-    const target = tool === "formatter" ? elements.source : tool === "compare" ? compareElements.original : tool === "case" ? caseElements.input : cyrillicElements.input;
+    const target = tool === "formatter" ? elements.source : tool === "sql" ? sqlElements.input : tool === "compare" ? compareElements.original : tool === "case" ? caseElements.input : cyrillicElements.input;
     target.focus();
   }
 }
 
 function updateToolPageTitle() {
-  const key = currentTool === "compare" ? "comparePageTitle" : currentTool === "case" ? "casePageTitle" : currentTool === "cyrillic" ? "cyrillicPageTitle" : "pageTitle";
+  const key = currentTool === "sql" ? "sqlPageTitle" : currentTool === "compare" ? "comparePageTitle" : currentTool === "case" ? "casePageTitle" : currentTool === "cyrillic" ? "cyrillicPageTitle" : "pageTitle";
   document.title = translate(key);
 }
 
@@ -934,6 +1001,7 @@ function refreshLocalizedToolState() {
   updateToolPageTitle();
   updateCompareCounts();
   updateCyrillicCount();
+  refreshSqlLocalizedState();
   refreshCaseResult();
   if (compareElements.output.dataset.rendered || compareElements.original.value || compareElements.changed.value) compareTexts();
   else resetComparisonView();
@@ -995,6 +1063,173 @@ document.querySelector("#clearCyrillicButton").addEventListener("click", () => {
   cyrillicElements.input.focus();
 });
 
+
+
+const sqlElements = {
+  input: document.querySelector("#sqlInput"),
+  result: document.querySelector("#sqlResult"),
+  inputLines: document.querySelector("#sqlInputLines"),
+  outputLines: document.querySelector("#sqlOutputLines"),
+  inputCount: document.querySelector("#sqlInputCount"),
+  inputType: document.querySelector("#sqlInputType"),
+  outputType: document.querySelector("#sqlOutputType"),
+  status: document.querySelector("#sqlStatus"),
+  statusText: document.querySelector("#sqlStatusText"),
+};
+
+const sqlSamples = {
+  sql: "select u.id,u.email,count(o.id) as order_count from users u left join orders o on o.user_id=u.id where u.active=1 and o.created_at>=current_date-30 group by u.id,u.email having count(o.id)>0 order by order_count desc;",
+  plsql: "declare v_count number; begin select count(*) into v_count from users where active=1; dbms_output.put_line(v_count); exception when others then dbms_output.put_line(sqlerrm); end;",
+};
+
+let currentSqlDialect = localStorage.getItem("devtools-sql-dialect") || "sql";
+
+function setSqlStatus(type, text) {
+  sqlElements.status.className = "status-message is-" + type;
+  sqlElements.status.querySelector(".status-icon").textContent = type === "valid" ? "✓" : type === "error" ? "!" : "•";
+  sqlElements.statusText.textContent = text;
+}
+
+function updateSqlMeta() {
+  sqlElements.inputCount.textContent = pluralizeCharacters(sqlElements.input.value.length);
+  updateLineNumbers(sqlElements.input, sqlElements.inputLines);
+  updateLineNumbers(sqlElements.result, sqlElements.outputLines);
+}
+
+function sqlDialectLabel() {
+  return currentSqlDialect === "plsql" ? "PL/SQL" : "SQL";
+}
+
+function setSqlDialect(dialect, focus = true) {
+  currentSqlDialect = dialect === "plsql" ? "plsql" : "sql";
+  localStorage.setItem("devtools-sql-dialect", currentSqlDialect);
+  document.querySelectorAll("[data-sql-dialect]").forEach((button) => {
+    const active = button.dataset.sqlDialect === currentSqlDialect;
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-selected", String(active));
+  });
+  const label = sqlDialectLabel();
+  sqlElements.inputType.textContent = label;
+  sqlElements.outputType.textContent = label;
+  if (sqlElements.result.value) formatSql(true);
+  else setSqlStatus("idle", translate("ready"));
+  if (focus) sqlElements.input.focus();
+}
+
+function sqlFormatOptions() {
+  return {
+    language: currentSqlDialect,
+    keywordCase: document.querySelector("#sqlKeywordCase").value,
+    tabWidth: Number(document.querySelector("#sqlIndentSize").value),
+    useTabs: false,
+    linesBetweenQueries: 1,
+  };
+}
+
+function formatSql(writeResult = true) {
+  const source = sqlElements.input.value.trim();
+  if (!source) {
+    setSqlStatus("error", translate("sqlEmpty"));
+    sqlElements.input.focus();
+    return false;
+  }
+  if (!window.sqlFormatter || typeof window.sqlFormatter.format !== "function") {
+    setSqlStatus("error", translate("sqlFormatterUnavailable"));
+    return false;
+  }
+  try {
+    const formatted = window.sqlFormatter.format(source, sqlFormatOptions());
+    if (writeResult) sqlElements.result.value = formatted;
+    setSqlStatus(
+      "valid",
+      writeResult
+        ? translate("sqlFormatted")
+        : translate("sqlSyntaxValid", { dialect: sqlDialectLabel() })
+    );
+    updateSqlMeta();
+    return true;
+  } catch (error) {
+    const prefix = translate("sqlInvalid", { dialect: sqlDialectLabel() });
+    setSqlStatus("error", prefix + ": " + (error.message || translate("parseError")));
+    return false;
+  }
+}
+
+function refreshSqlLocalizedState() {
+  updateSqlMeta();
+  if (sqlElements.result.value) setSqlStatus("valid", translate("sqlFormatted"));
+  else if (sqlElements.input.value) setSqlStatus("idle", translate("unsaved"));
+  else setSqlStatus("idle", translate("ready"));
+}
+
+document.querySelectorAll("[data-sql-dialect]").forEach((button) => {
+  button.addEventListener("click", () => setSqlDialect(button.dataset.sqlDialect));
+});
+document.querySelector("#formatSqlButton").addEventListener("click", () => formatSql(true));
+document.querySelector("#validateSqlButton").addEventListener("click", () => formatSql(false));
+document.querySelector("#sqlSampleButton").addEventListener("click", () => {
+  sqlElements.input.value = sqlSamples[currentSqlDialect];
+  sqlElements.result.value = "";
+  updateSqlMeta();
+  formatSql(true);
+});
+document.querySelector("#clearSqlButton").addEventListener("click", () => {
+  sqlElements.input.value = "";
+  sqlElements.result.value = "";
+  updateSqlMeta();
+  setSqlStatus("idle", translate("cleared"));
+  sqlElements.input.focus();
+});
+document.querySelector("#copySqlResultButton").addEventListener("click", async () => {
+  if (!sqlElements.result.value) {
+    setSqlStatus("error", translate("createResult"));
+    return;
+  }
+  await navigator.clipboard.writeText(sqlElements.result.value);
+  showToast(translate("copied"));
+});
+document.querySelector("#downloadSqlResultButton").addEventListener("click", () => {
+  if (!sqlElements.result.value) {
+    setSqlStatus("error", translate("createResult"));
+    return;
+  }
+  const blob = new Blob([sqlElements.result.value], { type: "application/sql;charset=utf-8" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "formatted-" + currentSqlDialect + ".sql";
+  link.click();
+  URL.revokeObjectURL(link.href);
+  showToast(translate("filePrepared"));
+});
+sqlElements.input.addEventListener("input", () => {
+  updateSqlMeta();
+  setSqlStatus("idle", translate("unsaved"));
+});
+sqlElements.input.addEventListener("scroll", () => {
+  sqlElements.inputLines.scrollTop = sqlElements.input.scrollTop;
+});
+sqlElements.result.addEventListener("scroll", () => {
+  sqlElements.outputLines.scrollTop = sqlElements.result.scrollTop;
+});
+sqlElements.input.addEventListener("keydown", (event) => {
+  if (event.key === "Tab") {
+    event.preventDefault();
+    const start = sqlElements.input.selectionStart;
+    const end = sqlElements.input.selectionEnd;
+    const indent = " ".repeat(Number(document.querySelector("#sqlIndentSize").value));
+    sqlElements.input.setRangeText(indent, start, end, "end");
+    updateSqlMeta();
+  }
+  if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
+    event.preventDefault();
+    formatSql(true);
+  }
+});
+["#sqlKeywordCase", "#sqlIndentSize"].forEach((selector) => {
+  document.querySelector(selector).addEventListener("change", () => {
+    if (sqlElements.result.value) formatSql(true);
+  });
+});
 
 const caseElements = {
   input: document.querySelector("#caseInput"),
@@ -1139,5 +1374,6 @@ document.querySelector("#copyCaseResultButton").addEventListener("click", async 
 });
 
 applyLanguage(currentLanguage);
+setSqlDialect(currentSqlDialect, false);
 setTool(currentTool, false);
 setStatus("idle", translate("ready"));

@@ -1112,3 +1112,90 @@ textarea::placeholder {
     grid-column: 1 / -1;
   }
 }
+
+
+.sql-toolbar {
+  flex-wrap: wrap;
+}
+
+.sql-options {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.select-control {
+  min-height: 36px;
+  padding: 0 8px 0 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.select-control select {
+  min-height: 26px;
+  padding: 0 24px 0 7px;
+  border: 0;
+  border-left: 1px solid var(--line);
+  outline: 0;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 10px;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.sql-workspace {
+  min-height: 480px;
+}
+
+.sql-workspace textarea,
+.sql-workspace .editor-wrap {
+  min-height: 430px;
+}
+
+@media (max-width: 820px) {
+  .sql-options {
+    width: 100%;
+  }
+
+  .sql-options .icon-button:first-of-type {
+    margin-left: auto;
+  }
+
+  .sql-workspace textarea,
+  .sql-workspace .editor-wrap {
+    min-height: 310px;
+  }
+}
+
+@media (max-width: 560px) {
+  .sql-options {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 110px) 36px 36px;
+  }
+
+  .select-control {
+    min-width: 0;
+  }
+
+  .select-control span {
+    display: none;
+  }
+
+  .select-control select {
+    width: 100%;
+    border-left: 0;
+  }
+
+  .sql-options .icon-button:first-of-type {
+    margin-left: 0;
+  }
+}

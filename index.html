@@ -11,6 +11,7 @@
   </head>
   <body>
     <header class="topbar">
+      <button class="icon-button tool-menu-button" type="button" id="toolMenuButton" title="Відкрити меню інструментів" aria-label="Відкрити меню інструментів" aria-expanded="false">☰</button>
       <a class="brand" href="/" aria-label="Devtools, головна">
         <img src="favicon.svg" alt="" width="32" height="32" />
         <span>Devtools</span>
@@ -23,41 +24,69 @@
     </header>
 
     <main class="workspace">
-      <nav class="tool-nav" aria-label="Інструменти" role="tablist">
-        <button class="tool-nav-button is-active" type="button" role="tab" aria-selected="true" data-tool="formatter">
-          <span aria-hidden="true">{ }</span>
-          <span id="formatterNavLabel">JSON / XML</span>
-        </button>
-        <button class="tool-nav-button" type="button" role="tab" aria-selected="false" data-tool="sql">
-          <span aria-hidden="true">SQL</span>
-          <span id="sqlNavLabel">SQL</span>
-        </button>
-        <button class="tool-nav-button" type="button" role="tab" aria-selected="false" data-tool="jwt">
-          <span aria-hidden="true">JWT</span>
-          <span id="jwtNavLabel">JWT</span>
-        </button>
-        <button class="tool-nav-button" type="button" role="tab" aria-selected="false" data-tool="cron">
-          <span aria-hidden="true">*/5</span>
-          <span id="cronNavLabel">CRON</span>
-        </button>
-        <button class="tool-nav-button" type="button" role="tab" aria-selected="false" data-tool="http">
-          <span aria-hidden="true">↗</span>
-          <span id="httpNavLabel">HTTP</span>
-        </button>
-        <button class="tool-nav-button" type="button" role="tab" aria-selected="false" data-tool="compare">
-          <span aria-hidden="true">≠</span>
-          <span id="compareNavLabel">Порівняння тексту</span>
-        </button>
-        <button class="tool-nav-button" type="button" role="tab" aria-selected="false" data-tool="case">
-          <span aria-hidden="true">Aa</span>
-          <span id="caseNavLabel">Регістр тексту</span>
-        </button>
-        <button class="tool-nav-button" type="button" role="tab" aria-selected="false" data-tool="cyrillic">
-          <span aria-hidden="true">Аa</span>
-          <span id="cyrillicNavLabel">Пошук кирилиці</span>
-        </button>
-      </nav>
-
+      <div class="tool-sidebar-backdrop" id="toolSidebarBackdrop" hidden></div>
+      <div class="workspace-layout">
+        <aside class="tool-sidebar" id="toolSidebar">
+          <header class="tool-sidebar-header">
+            <strong id="toolSidebarTitle">Інструменти</strong>
+            <button class="icon-button small tool-sidebar-close" type="button" id="toolSidebarClose" title="Закрити меню" aria-label="Закрити меню">×</button>
+          </header>
+          <label class="tool-search">
+            <span aria-hidden="true">⌕</span>
+            <input type="search" id="toolSearch" autocomplete="off" placeholder="Пошук інструментів…" aria-label="Пошук інструментів" />
+          </label>
+          <nav class="tool-nav" aria-label="Інструменти">
+            <section class="tool-nav-group" data-tool-group="text">
+              <h2 id="textCategoryLabel">Text &amp; Data</h2>
+              <button class="tool-nav-button is-active" type="button" aria-current="page" data-tool="formatter">
+                <span aria-hidden="true">{ }</span>
+                <span id="formatterNavLabel">JSON / XML</span>
+              </button>
+              <button class="tool-nav-button" type="button" data-tool="compare">
+                <span aria-hidden="true">≠</span>
+                <span id="compareNavLabel">Порівняння тексту</span>
+              </button>
+              <button class="tool-nav-button" type="button" data-tool="case">
+                <span aria-hidden="true">Aa</span>
+                <span id="caseNavLabel">Регістр тексту</span>
+              </button>
+              <button class="tool-nav-button" type="button" data-tool="cyrillic">
+                <span aria-hidden="true">Аa</span>
+                <span id="cyrillicNavLabel">Пошук кирилиці</span>
+              </button>
+            </section>
+            <section class="tool-nav-group" data-tool-group="web">
+              <h2 id="webCategoryLabel">Web</h2>
+              <button class="tool-nav-button" type="button" data-tool="http">
+                <span aria-hidden="true">↗</span>
+                <span id="httpNavLabel">HTTP</span>
+              </button>
+            </section>
+            <section class="tool-nav-group" data-tool-group="programming">
+              <h2 id="programmingCategoryLabel">Programming</h2>
+              <button class="tool-nav-button" type="button" data-tool="sql">
+                <span aria-hidden="true">SQL</span>
+                <span id="sqlNavLabel">SQL</span>
+              </button>
+            </section>
+            <section class="tool-nav-group" data-tool-group="security">
+              <h2 id="securityCategoryLabel">Security</h2>
+              <button class="tool-nav-button" type="button" data-tool="jwt">
+                <span aria-hidden="true">JWT</span>
+                <span id="jwtNavLabel">JWT</span>
+              </button>
+            </section>
+            <section class="tool-nav-group" data-tool-group="devops">
+              <h2 id="devopsCategoryLabel">DevOps</h2>
+              <button class="tool-nav-button" type="button" data-tool="cron">
+                <span aria-hidden="true">*/5</span>
+                <span id="cronNavLabel">CRON</span>
+              </button>
+            </section>
+          </nav>
+          <p class="tool-search-empty" id="toolSearchEmpty" hidden>Нічого не знайдено</p>
+        </aside>
+        <div class="tool-content">
       <section class="tool-panel" id="formatterTool" data-tool-panel="formatter">
         <div class="workspace-heading">
           <div>
@@ -534,6 +563,8 @@
           </div>
         </section>
       </section>
+        </div>
+      </div>
     </main>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>

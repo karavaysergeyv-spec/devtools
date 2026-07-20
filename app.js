@@ -295,7 +295,17 @@ const translations = {
     "httpAborted": "Запит скасовано",
     "httpNetworkError": "Запит не виконано. Перевірте URL, мережу, HTTPS і CORS на сервері",
     "httpNoResponse": "Спочатку виконайте запит",
-    "rowEnabled": "Увімкнути рядок"
+    "rowEnabled": "Увімкнути рядок",
+    "toolSidebarTitle": "Інструменти",
+    "toolSearch": "Пошук інструментів…",
+    "toolSearchEmpty": "Нічого не знайдено",
+    "openToolMenu": "Відкрити меню інструментів",
+    "closeToolMenu": "Закрити меню",
+    "textCategory": "Text & Data",
+    "webCategory": "Web",
+    "programmingCategory": "Programming",
+    "securityCategory": "Security",
+    "devopsCategory": "DevOps"
   },
   "en": {
     "pageTitle": "Devtools — JSON and XML formatter",
@@ -574,13 +584,40 @@ const translations = {
     "httpAborted": "Request cancelled",
     "httpNetworkError": "Request failed. Check the URL, network, HTTPS, and server CORS settings",
     "httpNoResponse": "Send a request first",
-    "rowEnabled": "Enable row"
+    "rowEnabled": "Enable row",
+    "toolSidebarTitle": "Tools",
+    "toolSearch": "Search tools…",
+    "toolSearchEmpty": "No tools found",
+    "openToolMenu": "Open tools menu",
+    "closeToolMenu": "Close menu",
+    "textCategory": "Text & Data",
+    "webCategory": "Web",
+    "programmingCategory": "Programming",
+    "securityCategory": "Security",
+    "devopsCategory": "DevOps"
   }
 };
 
+const toolRoutes = {
+  formatter: "text/json-xml",
+  compare: "text/diff",
+  case: "text/case",
+  cyrillic: "text/cyrillic",
+  http: "web/http",
+  sql: "programming/sql",
+  jwt: "security/jwt",
+  cron: "devops/cron",
+};
+
+function toolFromLocationHash() {
+  const route = window.location.hash.replace(/^#\/?/, "");
+  if (!route) return "";
+  return Object.keys(toolRoutes).find((tool) => toolRoutes[tool] === route || tool === route) || "";
+}
+
 let currentMode = "json";
 let currentLanguage = localStorage.getItem("devtools-language") || "uk";
-let currentTool = localStorage.getItem("devtools-tool") || "formatter";
+let currentTool = toolFromLocationHash() || localStorage.getItem("devtools-tool") || "formatter";
 let currentJwtMode = localStorage.getItem("devtools-jwt-mode") || "decode";
 let currentHttpMethod = localStorage.getItem("devtools-http-method") || "GET";
 let toastTimer;
@@ -634,6 +671,19 @@ function applyLanguage(language, announce = false) {
   });
   document.querySelector("#toolLabel").textContent = translate("toolCount");
   document.querySelector(".tool-nav").setAttribute("aria-label", translate("toolsLabel"));
+  document.querySelector("#toolSidebarTitle").textContent = translate("toolSidebarTitle");
+  document.querySelector("#toolSearch").placeholder = translate("toolSearch");
+  document.querySelector("#toolSearch").setAttribute("aria-label", translate("toolSearch"));
+  document.querySelector("#toolSearchEmpty").textContent = translate("toolSearchEmpty");
+  document.querySelector("#toolMenuButton").title = translate("openToolMenu");
+  document.querySelector("#toolMenuButton").setAttribute("aria-label", translate("openToolMenu"));
+  document.querySelector("#toolSidebarClose").title = translate("closeToolMenu");
+  document.querySelector("#toolSidebarClose").setAttribute("aria-label", translate("closeToolMenu"));
+  document.querySelector("#textCategoryLabel").textContent = translate("textCategory");
+  document.querySelector("#webCategoryLabel").textContent = translate("webCategory");
+  document.querySelector("#programmingCategoryLabel").textContent = translate("programmingCategory");
+  document.querySelector("#securityCategoryLabel").textContent = translate("securityCategory");
+  document.querySelector("#devopsCategoryLabel").textContent = translate("devopsCategory");
   document.querySelector("#formatterNavLabel").textContent = translate("formatterNav");
   document.querySelector("#compareNavLabel").textContent = translate("compareNav");
   document.querySelector("#cyrillicNavLabel").textContent = translate("cyrillicNav");
@@ -830,6 +880,7 @@ function applyLanguage(language, announce = false) {
   document.querySelector("#clearCaseButton").setAttribute("aria-label", translate("clear"));
   document.querySelector("#casePrivacy").textContent = translate("privacy");
   updateEditorMeta();
+  filterTools(document.querySelector("#toolSearch").value);
   refreshLocalizedToolState();
   if (announce && currentTool === "formatter") setStatus("idle", translate("ready"));
 }
@@ -1156,8 +1207,8 @@ const cyrillicLookalikes = {
   "Ј": "J", "ј": "j", "Ѕ": "S", "ѕ": "s"
 };
 
-function setTool(tool, focus = true) {
-  if (!["formatter", "sql", "jwt", "cron", "http", "compare", "case", "cyrillic"].includes(tool)) tool = "formatter";
+function setTool(tool, focus = true, historyMode = "push") {
+  if (!Object.hasOwn(toolRoutes, tool)) tool = "formatter";
   currentTool = tool;
   localStorage.setItem("devtools-tool", tool);
   document.querySelectorAll("[data-tool-panel]").forEach((panel) => {
@@ -1166,9 +1217,15 @@ function setTool(tool, focus = true) {
   document.querySelectorAll(".tool-nav-button").forEach((button) => {
     const active = button.dataset.tool === tool;
     button.classList.toggle("is-active", active);
-    button.setAttribute("aria-selected", String(active));
+    if (active) button.setAttribute("aria-current", "page");
+    else button.removeAttribute("aria-current");
   });
+  if (historyMode !== "none") {
+    const url = window.location.pathname + window.location.search + "#" + toolRoutes[tool];
+    window.history[historyMode === "replace" ? "replaceState" : "pushState"](null, "", url);
+  }
   updateToolPageTitle();
+  setToolSidebar(false);
   if (focus) {
     const target = tool === "formatter" ? elements.source : tool === "sql" ? sqlElements.input : tool === "jwt" ? jwtFocusTarget() : tool === "cron" ? cronElements.expression : tool === "http" ? httpElements.url : tool === "compare" ? compareElements.original : tool === "case" ? caseElements.input : cyrillicElements.input;
     target.focus();
@@ -1178,6 +1235,33 @@ function setTool(tool, focus = true) {
 function updateToolPageTitle() {
   const key = currentTool === "sql" ? "sqlPageTitle" : currentTool === "jwt" ? "jwtPageTitle" : currentTool === "cron" ? "cronPageTitle" : currentTool === "http" ? "httpPageTitle" : currentTool === "compare" ? "comparePageTitle" : currentTool === "case" ? "casePageTitle" : currentTool === "cyrillic" ? "cyrillicPageTitle" : "pageTitle";
   document.title = translate(key);
+}
+
+function setToolSidebar(open) {
+  document.querySelector("#toolSidebar").classList.toggle("is-open", open);
+  document.querySelector("#toolSidebarBackdrop").hidden = !open;
+  document.querySelector("#toolMenuButton").setAttribute("aria-expanded", String(open));
+  document.body.classList.toggle("sidebar-open", open);
+  if (open) document.querySelector("#toolSearch").focus();
+}
+
+function filterTools(query) {
+  const normalized = query.trim().toLocaleLowerCase(currentLanguage === "uk" ? "uk-UA" : "en-US");
+  let visibleCount = 0;
+  document.querySelectorAll(".tool-nav-group").forEach((group) => {
+    const heading = group.querySelector("h2").textContent.toLocaleLowerCase(currentLanguage === "uk" ? "uk-UA" : "en-US");
+    const groupMatches = normalized && heading.includes(normalized);
+    let groupCount = 0;
+    group.querySelectorAll(".tool-nav-button").forEach((button) => {
+      const label = button.textContent.toLocaleLowerCase(currentLanguage === "uk" ? "uk-UA" : "en-US");
+      const visible = !normalized || groupMatches || label.includes(normalized);
+      button.hidden = !visible;
+      if (visible) groupCount += 1;
+    });
+    group.hidden = groupCount === 0;
+    visibleCount += groupCount;
+  });
+  document.querySelector("#toolSearchEmpty").hidden = visibleCount > 0;
 }
 
 function setCompareStatus(text, type = "") {
@@ -1461,6 +1545,17 @@ function refreshLocalizedToolState() {
 
 document.querySelectorAll(".tool-nav-button").forEach((button) => {
   button.addEventListener("click", () => setTool(button.dataset.tool));
+});
+document.querySelector("#toolSearch").addEventListener("input", (event) => filterTools(event.target.value));
+document.querySelector("#toolMenuButton").addEventListener("click", () => setToolSidebar(true));
+document.querySelector("#toolSidebarClose").addEventListener("click", () => setToolSidebar(false));
+document.querySelector("#toolSidebarBackdrop").addEventListener("click", () => setToolSidebar(false));
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && document.querySelector("#toolSidebar").classList.contains("is-open")) setToolSidebar(false);
+});
+window.addEventListener("hashchange", () => {
+  const tool = toolFromLocationHash();
+  if (tool && tool !== currentTool) setTool(tool, false, "none");
 });
 [compareElements.original, compareElements.changed].forEach((editor) => {
   editor.addEventListener("input", updateCompareCounts);
@@ -2815,5 +2910,5 @@ initializeHttpBuilder();
 applyLanguage(currentLanguage);
 initializeSqlFormatter();
 setJwtMode(currentJwtMode, false);
-setTool(currentTool, false);
+setTool(currentTool, false, "replace");
 setStatus("idle", translate("ready"));

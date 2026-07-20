@@ -20,7 +20,7 @@ const samples = {
 const translations = {
   "uk": {
     "pageTitle": "Devtools — JSON та XML форматер",
-    "pageDescription": "Браузерні інструменти для розробників: JSON, XML, SQL, JWT, CRON та робота з текстом.",
+    "pageDescription": "Браузерні інструменти для розробників: JSON, XML, SQL, JWT, CRON, HTTP та робота з текстом.",
     "brandLabel": "Devtools, головна",
     "languageLabel": "Мова інтерфейсу",
     "eyebrow": "Інструменти розробника",
@@ -60,7 +60,7 @@ const translations = {
     "copied": "Результат скопійовано",
     "filePrepared": "Файл підготовлено",
     "unsaved": "Є незбережені зміни",
-    "toolCount": "7 інструментів",
+    "toolCount": "8 інструментів",
     "toolsLabel": "Інструменти",
     "formatterNav": "JSON / XML",
     "compareNav": "Порівняння тексту",
@@ -253,11 +253,53 @@ const translations = {
       "Чт",
       "Пт",
       "Сб"
-    ]
+    ],
+    "httpNav": "HTTP",
+    "httpPageTitle": "Devtools — HTTP конструктор запитів",
+    "httpEyebrow": "Інструменти розробника",
+    "httpHeading": "HTTP конструктор запитів",
+    "httpActions": "Дії HTTP запиту",
+    "httpMethod": "HTTP метод",
+    "httpUrl": "URL запиту",
+    "httpUrlPlaceholder": "https://api.example.com/resource",
+    "sendRequest": "Надіслати",
+    "abortRequest": "Скасувати запит",
+    "httpConfig": "Налаштування HTTP запиту",
+    "httpParams": "Параметри",
+    "httpHeaders": "Заголовки",
+    "httpBody": "Body",
+    "httpCredentials": "Надсилати cookies",
+    "addParam": "Додати параметр",
+    "addHeader": "Додати заголовок",
+    "requestBody": "Тіло запиту",
+    "formatJson": "Форматувати JSON",
+    "finalUrl": "Підсумковий URL",
+    "httpResponse": "Відповідь",
+    "awaitingRequest": "Очікує запиту",
+    "responseHeaders": "Заголовки відповіді",
+    "responseBody": "Body відповіді",
+    "responseHeadersPlaceholder": "Заголовки відповіді з’являться тут",
+    "responseBodyPlaceholder": "Body відповіді з’явиться тут",
+    "copyResponse": "Копіювати відповідь",
+    "httpNetworkNote": "Запит надсилається безпосередньо з браузера",
+    "rowKey": "Ключ",
+    "rowValue": "Значення",
+    "removeRow": "Видалити рядок",
+    "httpUrlEmpty": "Додайте URL запиту",
+    "httpUrlInvalid": "Некоректний URL",
+    "httpProtocolInvalid": "Дозволені лише HTTP та HTTPS URL",
+    "httpInvalidHeader": "Некоректний заголовок HTTP",
+    "httpInvalidJsonBody": "Body має містити коректний JSON",
+    "httpSending": "Надсилаємо запит…",
+    "httpComplete": "Запит завершено",
+    "httpAborted": "Запит скасовано",
+    "httpNetworkError": "Запит не виконано. Перевірте URL, мережу, HTTPS і CORS на сервері",
+    "httpNoResponse": "Спочатку виконайте запит",
+    "rowEnabled": "Увімкнути рядок"
   },
   "en": {
     "pageTitle": "Devtools — JSON and XML formatter",
-    "pageDescription": "Browser-based developer tools for JSON, XML, SQL, JWT, CRON, and text processing.",
+    "pageDescription": "Browser-based developer tools for JSON, XML, SQL, JWT, CRON, HTTP, and text processing.",
     "brandLabel": "Devtools, home",
     "languageLabel": "Interface language",
     "eyebrow": "Developer tools",
@@ -297,7 +339,7 @@ const translations = {
     "copied": "Result copied",
     "filePrepared": "File prepared",
     "unsaved": "Unsaved changes",
-    "toolCount": "7 tools",
+    "toolCount": "8 tools",
     "toolsLabel": "Tools",
     "formatterNav": "JSON / XML",
     "compareNav": "Text comparison",
@@ -490,7 +532,49 @@ const translations = {
       "Thu",
       "Fri",
       "Sat"
-    ]
+    ],
+    "httpNav": "HTTP",
+    "httpPageTitle": "Devtools — HTTP request builder",
+    "httpEyebrow": "Developer tools",
+    "httpHeading": "HTTP request builder",
+    "httpActions": "HTTP request actions",
+    "httpMethod": "HTTP method",
+    "httpUrl": "Request URL",
+    "httpUrlPlaceholder": "https://api.example.com/resource",
+    "sendRequest": "Send",
+    "abortRequest": "Cancel request",
+    "httpConfig": "HTTP request settings",
+    "httpParams": "Params",
+    "httpHeaders": "Headers",
+    "httpBody": "Body",
+    "httpCredentials": "Send cookies",
+    "addParam": "Add parameter",
+    "addHeader": "Add header",
+    "requestBody": "Request body",
+    "formatJson": "Format JSON",
+    "finalUrl": "Final URL",
+    "httpResponse": "Response",
+    "awaitingRequest": "Awaiting request",
+    "responseHeaders": "Response headers",
+    "responseBody": "Response body",
+    "responseHeadersPlaceholder": "Response headers will appear here",
+    "responseBodyPlaceholder": "Response body will appear here",
+    "copyResponse": "Copy response",
+    "httpNetworkNote": "The request is sent directly from your browser",
+    "rowKey": "Key",
+    "rowValue": "Value",
+    "removeRow": "Remove row",
+    "httpUrlEmpty": "Add a request URL",
+    "httpUrlInvalid": "Invalid URL",
+    "httpProtocolInvalid": "Only HTTP and HTTPS URLs are allowed",
+    "httpInvalidHeader": "Invalid HTTP header",
+    "httpInvalidJsonBody": "Body must contain valid JSON",
+    "httpSending": "Sending request…",
+    "httpComplete": "Request completed",
+    "httpAborted": "Request cancelled",
+    "httpNetworkError": "Request failed. Check the URL, network, HTTPS, and server CORS settings",
+    "httpNoResponse": "Send a request first",
+    "rowEnabled": "Enable row"
   }
 };
 
@@ -498,6 +582,7 @@ let currentMode = "json";
 let currentLanguage = localStorage.getItem("devtools-language") || "uk";
 let currentTool = localStorage.getItem("devtools-tool") || "formatter";
 let currentJwtMode = localStorage.getItem("devtools-jwt-mode") || "decode";
+let currentHttpMethod = localStorage.getItem("devtools-http-method") || "GET";
 let toastTimer;
 
 function translate(key, values = {}) {
@@ -684,6 +769,41 @@ function applyLanguage(language, announce = false) {
   document.querySelector("#cronBuilderTitle").textContent = translate("cronBuilderTitle");
   document.querySelector("#cronPrivacy").textContent = translate("privacy");
   renderCronBuilder();
+  document.querySelector("#httpNavLabel").textContent = translate("httpNav");
+  document.querySelector("#httpEyebrow").textContent = translate("httpEyebrow");
+  document.querySelector("#httpHeading").textContent = translate("httpHeading");
+  document.querySelector(".http-request-bar").setAttribute("aria-label", translate("httpActions"));
+  document.querySelector(".http-method-switch").setAttribute("aria-label", translate("httpMethod"));
+  httpElements.url.setAttribute("aria-label", translate("httpUrl"));
+  httpElements.url.placeholder = translate("httpUrlPlaceholder");
+  setActionLabel("#sendHttpButton", translate("sendRequest"));
+  document.querySelector("#abortHttpButton").title = translate("abortRequest");
+  document.querySelector("#abortHttpButton").setAttribute("aria-label", translate("abortRequest"));
+  document.querySelector("#httpSampleButton").title = translate("insertSample");
+  document.querySelector("#httpSampleButton").setAttribute("aria-label", translate("insertSample"));
+  document.querySelector("#clearHttpButton").title = translate("reset");
+  document.querySelector("#clearHttpButton").setAttribute("aria-label", translate("reset"));
+  document.querySelector(".http-config-tabs").setAttribute("aria-label", translate("httpConfig"));
+  document.querySelector("#httpParamsTab").textContent = translate("httpParams");
+  document.querySelector("#httpHeadersTab").textContent = translate("httpHeaders");
+  document.querySelector("#httpBodyTab").textContent = translate("httpBody");
+  document.querySelector("#httpCredentialsLabel").textContent = translate("httpCredentials");
+  setActionLabel("#addHttpParamButton", translate("addParam"));
+  setActionLabel("#addHttpHeaderButton", translate("addHeader"));
+  httpElements.body.setAttribute("aria-label", translate("requestBody"));
+  setActionLabel("#formatHttpJsonButton", translate("formatJson"));
+  document.querySelector("#httpFinalUrlLabel").textContent = translate("finalUrl");
+  document.querySelector("#httpResponseTitle").textContent = translate("httpResponse");
+  document.querySelector("#httpResponseHeadersTitle").textContent = translate("responseHeaders");
+  document.querySelector("#httpResponseBodyTitle").textContent = translate("responseBody");
+  httpElements.responseHeaders.setAttribute("aria-label", translate("responseHeaders"));
+  httpElements.responseHeaders.placeholder = translate("responseHeadersPlaceholder");
+  httpElements.responseBody.setAttribute("aria-label", translate("responseBody"));
+  httpElements.responseBody.placeholder = translate("responseBodyPlaceholder");
+  document.querySelector("#copyHttpResponseButton").title = translate("copyResponse");
+  document.querySelector("#copyHttpResponseButton").setAttribute("aria-label", translate("copyResponse"));
+  document.querySelector("#httpNetworkNote").textContent = translate("httpNetworkNote");
+  updateHttpRowLabels();
   document.querySelector("#caseNavLabel").textContent = translate("caseNav");
   document.querySelector("#caseEyebrow").textContent = translate("caseEyebrow");
   document.querySelector("#caseHeading").textContent = translate("caseHeading");
@@ -1011,6 +1131,24 @@ const cronElements = {
   builderStatus: document.querySelector("#cronBuilderStatus"),
 };
 
+const httpElements = {
+  url: document.querySelector("#httpUrl"),
+  params: document.querySelector("#httpParamsList"),
+  headers: document.querySelector("#httpHeadersList"),
+  body: document.querySelector("#httpRequestBody"),
+  contentType: document.querySelector("#httpContentType"),
+  credentials: document.querySelector("#httpCredentials"),
+  finalUrl: document.querySelector("#httpFinalUrl"),
+  responseStatus: document.querySelector("#httpResponseStatus"),
+  duration: document.querySelector("#httpDuration"),
+  responseSize: document.querySelector("#httpResponseSize"),
+  responseHeaders: document.querySelector("#httpResponseHeaders"),
+  responseBody: document.querySelector("#httpResponseBody"),
+  responseType: document.querySelector("#httpResponseType"),
+  status: document.querySelector("#httpStatus"),
+  statusText: document.querySelector("#httpStatusText"),
+};
+
 const cyrillicLookalikes = {
   "А": "A", "а": "a", "В": "B", "Е": "E", "е": "e", "К": "K", "М": "M",
   "Н": "H", "О": "O", "о": "o", "Р": "P", "р": "p", "С": "C", "с": "c",
@@ -1019,7 +1157,7 @@ const cyrillicLookalikes = {
 };
 
 function setTool(tool, focus = true) {
-  if (!["formatter", "sql", "jwt", "cron", "compare", "case", "cyrillic"].includes(tool)) tool = "formatter";
+  if (!["formatter", "sql", "jwt", "cron", "http", "compare", "case", "cyrillic"].includes(tool)) tool = "formatter";
   currentTool = tool;
   localStorage.setItem("devtools-tool", tool);
   document.querySelectorAll("[data-tool-panel]").forEach((panel) => {
@@ -1032,13 +1170,13 @@ function setTool(tool, focus = true) {
   });
   updateToolPageTitle();
   if (focus) {
-    const target = tool === "formatter" ? elements.source : tool === "sql" ? sqlElements.input : tool === "jwt" ? jwtFocusTarget() : tool === "cron" ? cronElements.expression : tool === "compare" ? compareElements.original : tool === "case" ? caseElements.input : cyrillicElements.input;
+    const target = tool === "formatter" ? elements.source : tool === "sql" ? sqlElements.input : tool === "jwt" ? jwtFocusTarget() : tool === "cron" ? cronElements.expression : tool === "http" ? httpElements.url : tool === "compare" ? compareElements.original : tool === "case" ? caseElements.input : cyrillicElements.input;
     target.focus();
   }
 }
 
 function updateToolPageTitle() {
-  const key = currentTool === "sql" ? "sqlPageTitle" : currentTool === "jwt" ? "jwtPageTitle" : currentTool === "cron" ? "cronPageTitle" : currentTool === "compare" ? "comparePageTitle" : currentTool === "case" ? "casePageTitle" : currentTool === "cyrillic" ? "cyrillicPageTitle" : "pageTitle";
+  const key = currentTool === "sql" ? "sqlPageTitle" : currentTool === "jwt" ? "jwtPageTitle" : currentTool === "cron" ? "cronPageTitle" : currentTool === "http" ? "httpPageTitle" : currentTool === "compare" ? "comparePageTitle" : currentTool === "case" ? "casePageTitle" : currentTool === "cyrillic" ? "cyrillicPageTitle" : "pageTitle";
   document.title = translate(key);
 }
 
@@ -1313,6 +1451,7 @@ function refreshLocalizedToolState() {
   refreshJwtLocalizedState();
   refreshJwtEncoderLocalizedState();
   refreshCronLocalizedState();
+  refreshHttpLocalizedState();
   refreshCaseResult();
   if (compareElements.output.dataset.rendered || compareElements.original.value || compareElements.changed.value) compareTexts();
   else resetComparisonView();
@@ -2168,6 +2307,367 @@ cronElements.timezone.addEventListener("change", () => {
   if (cronElements.expression.value) analyzeCron(false);
 });
 
+
+let currentHttpView = "params";
+let activeHttpController = null;
+
+function setHttpStatus(type, text) {
+  httpElements.status.className = "status-message is-" + type;
+  httpElements.status.querySelector(".status-icon").textContent = type === "valid" ? "✓" : type === "error" || type === "warning" ? "!" : type === "working" ? "…" : "•";
+  httpElements.statusText.textContent = text;
+  httpElements.status.dataset.state = type;
+}
+
+function setHttpMethod(method, focus = true) {
+  currentHttpMethod = method === "POST" ? "POST" : "GET";
+  localStorage.setItem("devtools-http-method", currentHttpMethod);
+  document.querySelectorAll("[data-http-method]").forEach((button) => {
+    const active = button.dataset.httpMethod === currentHttpMethod;
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-pressed", String(active));
+  });
+  const bodyTab = document.querySelector("#httpBodyTab");
+  bodyTab.disabled = currentHttpMethod === "GET";
+  if (bodyTab.disabled && currentHttpView === "body") setHttpView("params", false);
+  updateHttpFinalUrl();
+  if (focus) httpElements.url.focus();
+}
+
+function setHttpView(view, focus = true) {
+  currentHttpView = ["params", "headers", "body"].includes(view) ? view : "params";
+  if (currentHttpMethod === "GET" && currentHttpView === "body") currentHttpView = "params";
+  document.querySelectorAll("[data-http-view-panel]").forEach((panel) => {
+    panel.hidden = panel.dataset.httpViewPanel !== currentHttpView;
+  });
+  document.querySelectorAll("[data-http-view]").forEach((button) => {
+    const active = button.dataset.httpView === currentHttpView;
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-selected", String(active));
+  });
+  if (focus) {
+    const panel = document.querySelector('[data-http-view-panel="' + currentHttpView + '"]');
+    const target = panel.querySelector("input:not([type=checkbox]), textarea, button");
+    if (target) target.focus();
+  }
+}
+
+function createHttpRow(kind, key = "", value = "", enabled = true) {
+  const row = document.createElement("div");
+  row.className = "http-key-value-row";
+  row.dataset.httpRow = kind;
+  const toggle = document.createElement("input");
+  toggle.type = "checkbox";
+  toggle.className = "http-row-toggle";
+  toggle.checked = enabled;
+  const keyInput = document.createElement("input");
+  keyInput.type = "text";
+  keyInput.className = "http-row-key";
+  keyInput.value = key;
+  keyInput.autocomplete = "off";
+  const valueInput = document.createElement("input");
+  valueInput.type = "text";
+  valueInput.className = "http-row-value";
+  valueInput.value = value;
+  valueInput.autocomplete = "off";
+  const remove = document.createElement("button");
+  remove.type = "button";
+  remove.className = "icon-button small http-remove-row";
+  remove.textContent = "×";
+  remove.addEventListener("click", () => {
+    row.remove();
+    if (kind === "param") updateHttpFinalUrl();
+  });
+  [toggle, keyInput, valueInput].forEach((input) => {
+    input.addEventListener("input", () => {
+      if (kind === "param") updateHttpFinalUrl();
+      setHttpStatus("idle", translate("unsaved"));
+    });
+    input.addEventListener("change", () => {
+      if (kind === "param") updateHttpFinalUrl();
+    });
+  });
+  row.append(toggle, keyInput, valueInput, remove);
+  updateHttpRowLabel(row);
+  return row;
+}
+
+function updateHttpRowLabel(row) {
+  const key = row.querySelector(".http-row-key");
+  const value = row.querySelector(".http-row-value");
+  const toggle = row.querySelector(".http-row-toggle");
+  const remove = row.querySelector(".http-remove-row");
+  key.placeholder = translate("rowKey");
+  key.setAttribute("aria-label", translate("rowKey"));
+  value.placeholder = translate("rowValue");
+  value.setAttribute("aria-label", translate("rowValue"));
+  toggle.setAttribute("aria-label", translate("rowEnabled"));
+  remove.title = translate("removeRow");
+  remove.setAttribute("aria-label", translate("removeRow"));
+}
+
+function updateHttpRowLabels() {
+  document.querySelectorAll(".http-key-value-row").forEach(updateHttpRowLabel);
+}
+
+function readHttpRows(container) {
+  return Array.from(container.querySelectorAll(".http-key-value-row"))
+    .filter((row) => row.querySelector(".http-row-toggle").checked)
+    .map((row) => ({
+      key: row.querySelector(".http-row-key").value.trim(),
+      value: row.querySelector(".http-row-value").value,
+    }))
+    .filter((entry) => entry.key);
+}
+
+function buildHttpUrl() {
+  const source = httpElements.url.value.trim();
+  if (!source) throw new Error(translate("httpUrlEmpty"));
+  let url;
+  try {
+    url = new URL(source, window.location.href);
+  } catch {
+    throw new Error(translate("httpUrlInvalid"));
+  }
+  if (!["http:", "https:"].includes(url.protocol)) throw new Error(translate("httpProtocolInvalid"));
+  readHttpRows(httpElements.params).forEach(({ key, value }) => url.searchParams.append(key, value));
+  return url;
+}
+
+function updateHttpFinalUrl() {
+  if (!httpElements.url.value.trim()) {
+    httpElements.finalUrl.textContent = "—";
+    return;
+  }
+  try {
+    httpElements.finalUrl.textContent = buildHttpUrl().href;
+  } catch {
+    httpElements.finalUrl.textContent = httpElements.url.value.trim();
+  }
+}
+
+
+function resetHttpResponse() {
+  delete httpElements.status.dataset.responseOk;
+  httpElements.responseStatus.textContent = translate("awaitingRequest");
+  httpElements.responseStatus.className = "result-status";
+  httpElements.duration.textContent = "— ms";
+  httpElements.responseSize.textContent = "— B";
+  httpElements.responseHeaders.value = "";
+  httpElements.responseBody.value = "";
+  httpElements.responseType.textContent = "TEXT";
+}
+
+function buildHttpHeaders() {
+  const headers = new Headers();
+  try {
+    readHttpRows(httpElements.headers).forEach(({ key, value }) => headers.append(key, value));
+  } catch {
+    throw new Error(translate("httpInvalidHeader"));
+  }
+  if (currentHttpMethod === "POST" && !headers.has("Content-Type")) {
+    headers.set("Content-Type", httpElements.contentType.value);
+  }
+  return headers;
+}
+
+function httpRequestBody() {
+  if (currentHttpMethod !== "POST") return undefined;
+  const body = httpElements.body.value;
+  if (httpElements.contentType.value === "application/json" && body.trim()) {
+    try {
+      return JSON.stringify(JSON.parse(body));
+    } catch {
+      throw new Error(translate("httpInvalidJsonBody"));
+    }
+  }
+  return body;
+}
+
+function formatByteSize(bytes) {
+  if (bytes < 1024) return bytes + " B";
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
+  return (bytes / (1024 * 1024)).toFixed(1) + " MB";
+}
+
+function setHttpLoading(loading) {
+  document.querySelector("#sendHttpButton").disabled = loading;
+  document.querySelector("#abortHttpButton").hidden = !loading;
+}
+
+async function sendHttpRequest() {
+  let url;
+  let headers;
+  let body;
+  try {
+    url = buildHttpUrl();
+    headers = buildHttpHeaders();
+    body = httpRequestBody();
+  } catch (error) {
+    setHttpStatus("error", error.message);
+    return false;
+  }
+
+  updateHttpFinalUrl();
+  activeHttpController?.abort();
+  activeHttpController = new AbortController();
+  setHttpLoading(true);
+  resetHttpResponse();
+  setHttpStatus("working", translate("httpSending"));
+  const started = performance.now();
+
+  try {
+    const response = await fetch(url, {
+      method: currentHttpMethod,
+      headers,
+      body,
+      credentials: httpElements.credentials.checked ? "include" : "omit",
+      redirect: "follow",
+      signal: activeHttpController.signal,
+    });
+    const text = await response.text();
+    const duration = Math.round(performance.now() - started);
+    const contentType = response.headers.get("content-type") || "";
+    let rendered = text;
+    let responseType = "TEXT";
+    if (contentType.includes("json") && text) {
+      try {
+        rendered = JSON.stringify(JSON.parse(text), null, 2);
+        responseType = "JSON";
+      } catch {
+        responseType = "TEXT";
+      }
+    }
+    httpElements.responseBody.value = rendered;
+    httpElements.responseHeaders.value = Array.from(response.headers.entries())
+      .map(([key, value]) => key + ": " + value)
+      .join("\n");
+    httpElements.responseType.textContent = responseType;
+    httpElements.responseStatus.textContent = response.status + (response.statusText ? " " + response.statusText : "");
+    httpElements.responseStatus.className = "result-status " + (response.ok ? "is-success" : "is-error");
+    httpElements.duration.textContent = duration + " ms";
+    httpElements.responseSize.textContent = formatByteSize(new TextEncoder().encode(text).length);
+    setHttpStatus(response.ok ? "valid" : "warning", translate("httpComplete"));
+    httpElements.status.dataset.state = "complete";
+    httpElements.status.dataset.responseOk = String(response.ok);
+    return true;
+  } catch (error) {
+    if (error.name === "AbortError") {
+      setHttpStatus("idle", translate("httpAborted"));
+    } else {
+      setHttpStatus("error", translate("httpNetworkError"));
+      httpElements.responseStatus.textContent = "—";
+      httpElements.responseStatus.className = "result-status is-error";
+    }
+    return false;
+  } finally {
+    setHttpLoading(false);
+    activeHttpController = null;
+  }
+}
+
+function formatHttpJsonBody() {
+  if (!httpElements.body.value.trim()) {
+    setHttpStatus("error", translate("httpInvalidJsonBody"));
+    return;
+  }
+  try {
+    httpElements.body.value = JSON.stringify(JSON.parse(httpElements.body.value), null, 2);
+    setHttpStatus("idle", translate("unsaved"));
+  } catch {
+    setHttpStatus("error", translate("httpInvalidJsonBody"));
+  }
+}
+
+function refreshHttpLocalizedState() {
+  updateHttpRowLabels();
+  if (httpElements.status.dataset.state === "complete") {
+    setHttpStatus(httpElements.status.dataset.responseOk === "false" ? "warning" : "valid", translate("httpComplete"));
+    httpElements.status.dataset.state = "complete";
+  } else if (httpElements.url.value) setHttpStatus("idle", translate("unsaved"));
+  else setHttpStatus("idle", translate("ready"));
+  if (!httpElements.responseBody.value && !httpElements.responseHeaders.value) {
+    httpElements.responseStatus.textContent = translate("awaitingRequest");
+  }
+}
+
+
+function resetHttpBuilder() {
+  activeHttpController?.abort();
+  httpElements.url.value = "";
+  httpElements.params.replaceChildren(createHttpRow("param"));
+  httpElements.headers.replaceChildren(createHttpRow("header"));
+  httpElements.body.value = "";
+  httpElements.contentType.value = "application/json";
+  httpElements.credentials.checked = false;
+  setHttpMethod("GET", false);
+  setHttpView("params", false);
+  resetHttpResponse();
+  updateHttpFinalUrl();
+  setHttpStatus("idle", translate("cleared"));
+  httpElements.url.focus();
+}
+
+function initializeHttpBuilder() {
+  httpElements.params.append(createHttpRow("param"));
+  httpElements.headers.append(createHttpRow("header"));
+  setHttpMethod(currentHttpMethod, false);
+  setHttpView("params", false);
+  resetHttpResponse();
+  updateHttpFinalUrl();
+}
+
+document.querySelectorAll("[data-http-method]").forEach((button) => {
+  button.addEventListener("click", () => setHttpMethod(button.dataset.httpMethod));
+});
+document.querySelectorAll("[data-http-view]").forEach((button) => {
+  button.addEventListener("click", () => setHttpView(button.dataset.httpView));
+});
+document.querySelector("#addHttpParamButton").addEventListener("click", () => {
+  const row = createHttpRow("param");
+  httpElements.params.append(row);
+  row.querySelector(".http-row-key").focus();
+});
+document.querySelector("#addHttpHeaderButton").addEventListener("click", () => {
+  const row = createHttpRow("header");
+  httpElements.headers.append(row);
+  row.querySelector(".http-row-key").focus();
+});
+document.querySelector("#sendHttpButton").addEventListener("click", sendHttpRequest);
+document.querySelector("#abortHttpButton").addEventListener("click", () => activeHttpController?.abort());
+document.querySelector("#formatHttpJsonButton").addEventListener("click", formatHttpJsonBody);
+document.querySelector("#clearHttpButton").addEventListener("click", resetHttpBuilder);
+document.querySelector("#httpSampleButton").addEventListener("click", () => {
+  setHttpMethod("GET", false);
+  setHttpView("params", false);
+  httpElements.url.value = "staticwebapp.config.json";
+  httpElements.params.replaceChildren(createHttpRow("param", "source", "devtools"));
+  httpElements.headers.replaceChildren(createHttpRow("header", "Accept", "application/json"));
+  httpElements.body.value = "";
+  resetHttpResponse();
+  updateHttpFinalUrl();
+  setHttpStatus("idle", translate("unsaved"));
+});
+document.querySelector("#copyHttpResponseButton").addEventListener("click", async () => {
+  if (!httpElements.responseBody.value) {
+    setHttpStatus("error", translate("httpNoResponse"));
+    return;
+  }
+  await navigator.clipboard.writeText(httpElements.responseBody.value);
+  showToast(translate("copied"));
+});
+httpElements.url.addEventListener("input", () => {
+  updateHttpFinalUrl();
+  setHttpStatus("idle", translate("unsaved"));
+});
+httpElements.url.addEventListener("keydown", (event) => {
+  if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
+    event.preventDefault();
+    sendHttpRequest();
+  }
+});
+httpElements.body.addEventListener("input", () => setHttpStatus("idle", translate("unsaved")));
+httpElements.contentType.addEventListener("change", () => setHttpStatus("idle", translate("unsaved")));
+
 const caseElements = {
   input: document.querySelector("#caseInput"),
   result: document.querySelector("#caseResult"),
@@ -2311,6 +2811,7 @@ document.querySelector("#copyCaseResultButton").addEventListener("click", async 
 });
 
 initializeCronBuilder();
+initializeHttpBuilder();
 applyLanguage(currentLanguage);
 initializeSqlFormatter();
 setJwtMode(currentJwtMode, false);

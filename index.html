@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Браузерні інструменти для розробників: JSON, XML, SQL, JWT та робота з текстом." />
+    <meta name="description" content="Браузерні інструменти для розробників: JSON, XML, SQL, JWT, CRON, HTTP та робота з текстом." />
     <meta name="theme-color" content="#f5f7f8" />
     <title>Devtools — JSON та XML форматер</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
@@ -15,7 +15,7 @@
         <img src="favicon.svg" alt="" width="32" height="32" />
         <span>Devtools</span>
       </a>
-      <span class="tool-label" id="toolLabel">7 інструментів</span>
+      <span class="tool-label" id="toolLabel">8 інструментів</span>
       <div class="language-switch" role="group" aria-label="Мова інтерфейсу">
         <button class="language-button is-active" type="button" data-language="uk" aria-pressed="true">UA</button>
         <button class="language-button" type="button" data-language="en" aria-pressed="false">EN</button>
@@ -39,6 +39,10 @@
         <button class="tool-nav-button" type="button" role="tab" aria-selected="false" data-tool="cron">
           <span aria-hidden="true">*/5</span>
           <span id="cronNavLabel">CRON</span>
+        </button>
+        <button class="tool-nav-button" type="button" role="tab" aria-selected="false" data-tool="http">
+          <span aria-hidden="true">↗</span>
+          <span id="httpNavLabel">HTTP</span>
         </button>
         <button class="tool-nav-button" type="button" role="tab" aria-selected="false" data-tool="compare">
           <span aria-hidden="true">≠</span>
@@ -311,6 +315,87 @@
         <section class="statusbar">
           <div class="privacy-note"><span aria-hidden="true">⌁</span><span id="cronPrivacy">Дані обробляються лише у вашому браузері</span></div>
           <div class="cron-format-hint"><code>minute hour day month weekday</code></div>
+        </section>
+      </section>
+
+      <section class="tool-panel" id="httpTool" data-tool-panel="http" hidden>
+        <div class="workspace-heading">
+          <div>
+            <p class="eyebrow" id="httpEyebrow">Інструменти розробника</p>
+            <h1 id="httpHeading">HTTP конструктор запитів</h1>
+          </div>
+        </div>
+
+        <section class="toolbar http-request-bar" aria-label="Дії HTTP запиту">
+          <div class="mode-switch http-method-switch" role="group" aria-label="HTTP метод">
+            <button class="mode-button is-active" type="button" data-http-method="GET" aria-pressed="true">GET</button>
+            <button class="mode-button" type="button" data-http-method="POST" aria-pressed="false">POST</button>
+          </div>
+          <div class="http-url-control">
+            <input type="url" id="httpUrl" spellcheck="false" autocomplete="off" aria-label="URL запиту" placeholder="https://api.example.com/resource" />
+            <button class="button button-primary" type="button" id="sendHttpButton"><span aria-hidden="true">▶</span> Надіслати</button>
+            <button class="icon-button" type="button" id="abortHttpButton" title="Скасувати запит" aria-label="Скасувати запит" hidden>×</button>
+            <button class="icon-button" type="button" id="httpSampleButton" title="Вставити приклад" aria-label="Вставити приклад">✦</button>
+            <button class="icon-button" type="button" id="clearHttpButton" title="Очистити" aria-label="Очистити">↺</button>
+          </div>
+        </section>
+
+        <section class="http-config-section">
+          <div class="http-config-tabs" role="tablist" aria-label="Налаштування HTTP запиту">
+            <button class="http-config-tab is-active" type="button" role="tab" aria-selected="true" data-http-view="params" id="httpParamsTab">Параметри</button>
+            <button class="http-config-tab" type="button" role="tab" aria-selected="false" data-http-view="headers" id="httpHeadersTab">Заголовки</button>
+            <button class="http-config-tab" type="button" role="tab" aria-selected="false" data-http-view="body" id="httpBodyTab">Body</button>
+            <label class="check-control http-credentials-control"><input type="checkbox" id="httpCredentials" /><span id="httpCredentialsLabel">Надсилати cookies</span></label>
+          </div>
+
+          <div class="http-config-panel" data-http-view-panel="params">
+            <div class="http-key-value-list" id="httpParamsList"></div>
+            <button class="button http-add-row" type="button" id="addHttpParamButton"><span aria-hidden="true">+</span> Додати параметр</button>
+          </div>
+
+          <div class="http-config-panel" data-http-view-panel="headers" hidden>
+            <div class="http-key-value-list" id="httpHeadersList"></div>
+            <button class="button http-add-row" type="button" id="addHttpHeaderButton"><span aria-hidden="true">+</span> Додати заголовок</button>
+          </div>
+
+          <div class="http-config-panel http-body-panel" data-http-view-panel="body" hidden>
+            <label class="select-control http-content-type-control"><span id="httpContentTypeLabel">Content-Type</span><select id="httpContentType"><option value="application/json">application/json</option><option value="text/plain">text/plain</option><option value="application/x-www-form-urlencoded">application/x-www-form-urlencoded</option></select></label>
+            <textarea id="httpRequestBody" spellcheck="false" aria-label="Тіло запиту" placeholder="{&#10;  &quot;name&quot;: &quot;Devtools&quot;&#10;}"></textarea>
+            <button class="button" type="button" id="formatHttpJsonButton"><span aria-hidden="true">≡</span> Форматувати JSON</button>
+          </div>
+
+          <div class="http-url-preview">
+            <span id="httpFinalUrlLabel">Підсумковий URL</span>
+            <code id="httpFinalUrl">—</code>
+          </div>
+        </section>
+
+        <section class="http-response-section">
+          <header class="result-header">
+            <div><h2 id="httpResponseTitle">Відповідь</h2><span class="result-status" id="httpResponseStatus">Очікує запиту</span></div>
+            <div class="http-response-metrics">
+              <span id="httpDuration">— ms</span>
+              <span id="httpResponseSize">— B</span>
+            </div>
+          </header>
+          <section class="editor-shell http-response-workspace">
+            <article class="editor-pane">
+              <header class="pane-header"><div><span class="pane-title" id="httpResponseHeadersTitle">Заголовки відповіді</span><span class="data-type">HTTP</span></div></header>
+              <textarea class="plain-editor" id="httpResponseHeaders" readonly spellcheck="false" aria-label="Заголовки відповіді" placeholder="Заголовки відповіді з’являться тут"></textarea>
+            </article>
+            <article class="editor-pane output-pane">
+              <header class="pane-header">
+                <div><span class="pane-title" id="httpResponseBodyTitle">Body відповіді</span><span class="data-type" id="httpResponseType">TEXT</span></div>
+                <button class="icon-button small" type="button" id="copyHttpResponseButton" title="Копіювати відповідь" aria-label="Копіювати відповідь">⧉</button>
+              </header>
+              <textarea class="plain-editor" id="httpResponseBody" readonly spellcheck="false" aria-label="Body відповіді" placeholder="Body відповіді з’явиться тут"></textarea>
+            </article>
+          </section>
+        </section>
+
+        <section class="statusbar" aria-live="polite">
+          <div class="status-message is-idle" id="httpStatus"><span class="status-icon" aria-hidden="true">•</span><span id="httpStatusText">Готово до роботи</span></div>
+          <div class="privacy-note"><span aria-hidden="true">↗</span><span id="httpNetworkNote">Запит надсилається безпосередньо з браузера</span></div>
         </section>
       </section>
 
